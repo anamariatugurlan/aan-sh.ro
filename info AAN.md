@@ -39,3 +39,23 @@ TikTok / Instagram, categoriile ei reale cu lei/kg, firma și CUI, curierul.
 
 **Cum se dă înapoi:** proiectul e într-un git al lui; `git log` arată pașii,
 `git revert <hash>` anulează un pas.
+
+---
+
+## 2026-08-19 — codul urcat pe GitHub
+
+Depózit: **https://github.com/anamariatugurlan/aan-sh.ro** — cont nou, al clientei,
+depózit privat. Contul proprietarului (`littledemo2402`) nu are acces acolo și nici
+nu-i trebuie; sunt două sertare separate în locuri diferite.
+
+La prima încercare, calculatorul a folosit automat parola contului vechi și GitHub a
+refuzat-o. S-a rezolvat punând numele contului în adresa depózitului
+(`https://anamariatugurlan@github.com/...`), ca parola veche să rămână neatinsă pentru
+preturismart.ro. Conectarea propriu-zisă a făcut-o proprietarul, dintr-un terminal
+al lui — eu nu introduc parole.
+
+**Stare: URCAT pe GitHub, dar NEPUBLICAT pe internet.** Nu există încă găzduire, iar
+domeniul aan-sh.ro nu arată spre nimic. Nimeni din afară nu poate vedea site-ul.
+
+**Urmează:** cont Vercel prin GitHub-ul clientei, importat depózitul, puse variabilele
+`MENTENANTA=1` și `CHEIE_ACCES`, apoi două înregistrări DNS la Hostico.
