@@ -59,3 +59,33 @@ domeniul aan-sh.ro nu arată spre nimic. Nimeni din afară nu poate vedea site-u
 
 **Urmează:** cont Vercel prin GitHub-ul clientei, importat depózitul, puse variabilele
 `MENTENANTA=1` și `CHEIE_ACCES`, apoi două înregistrări DNS la Hostico.
+
+---
+
+## 2026-08-19 — site-ul urcat pe Vercel, în mentenanță
+
+Cont Vercel nou, făcut prin GitHub-ul clientei. Echipa **aan**, plan **Hobby** (gratuit),
+proiectul **aan-sh-ro**. Vercel a recunoscut singur Next.js.
+
+Puse la Environment Variables, înainte de prima publicare:
+- `MENTENANTA=1`
+- `CHEIE_ACCES` — cuvânt ales de proprietar, pe care nu-l știu și nu-mi trebuie
+
+Adresa: **https://aan-sh-ro.vercel.app**
+
+Verificat din afară, nu doar pe ecranul lui:
+- cod de răspuns **503**, cu `X-Robots-Tag: noindex, nofollow` și `Retry-After: 3600`
+- conținut: „Pregătim magazinul"
+
+Deci site-ul e viu, dar închis pentru public, iar Google nu-l înregistrează.
+Cine are cheia intră normal, prin `/?cheie=...`.
+
+**Stare: PUBLICAT pe adresa Vercel, dar ÎNCHIS cu mentenanță.** Domeniul aan-sh.ro
+încă nu e legat.
+
+**Urmează:** Add Domain în Vercel pentru aan-sh.ro, apoi cele două înregistrări la Hostico
+(serverele de nume rămân la Hostico, ca la preturismart.ro — se adaugă doar un A la domeniul
+gol și un CNAME la www; valorile le dă Vercel, sunt diferite de la un proiect la altul).
+
+**Cum se dă înapoi:** în Vercel, Deployments → versiunea anterioară → Promote to Production.
+Ca să se deschidă magazinul: se șterge `MENTENANTA` sau se pune pe 0, apoi Redeploy.
