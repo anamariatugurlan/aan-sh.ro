@@ -22,7 +22,7 @@ export async function generateMetadata(props: PageProps<"/categorie/[slug]">) {
   if (!cat) return {};
   return {
     title: cat.nume,
-    description: `${cat.nume} second hand la ${cat.leiPeKg} lei/kg. ${cat.descriere}`,
+    description: `${cat.nume} second hand, bucatÄ cu bucatÄ. ${cat.descriere}`,
   };
 }
 
@@ -52,10 +52,6 @@ export default async function Page(props: PageProps<"/categorie/[slug]">) {
         <div>
           <h1 className="text-3xl font-bold tracking-tight text-stone-900">{cat.nume}</h1>
           <p className="mt-1 text-stone-600">{cat.descriere}</p>
-        </div>
-        <div className="rounded-xl bg-orange-50 px-5 py-3 text-center">
-          <div className="text-2xl font-bold text-orange-700">{cat.leiPeKg} lei</div>
-          <div className="text-xs font-medium uppercase tracking-wide text-orange-600">pe kilogram</div>
         </div>
       </div>
 

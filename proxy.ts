@@ -36,7 +36,7 @@ function paginaMentenanta(): string {
   <div class="cutie">
     <div class="logo">aan<span>-sh</span></div>
     <h1>Pregătim magazinul</h1>
-    <p>Lucrăm la site chiar acum. Revenim în curând cu haine second hand alese bucată cu bucată, plătite la kilogram.</p>
+    <p>Lucrăm la site chiar acum. Revenim în curând cu haine second hand alese bucată cu bucată.</p>
     <p class="linie">Până atunci ne găsești pe Facebook, TikTok și Instagram.</p>
   </div>
 </body>

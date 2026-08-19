@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Poza } from "./poza";
 import { AdaugaInCos } from "./adauga-in-cos";
-import { formatKg, formatLei, leiPeKgPentru, pretProdus, type Produs } from "@/lib/shop";
+import { formatLei, type Produs } from "@/lib/shop";
 
 export function CardProdus({ p }: { p: Produs }) {
   return (
@@ -19,16 +19,11 @@ export function CardProdus({ p }: { p: Produs }) {
 
         <div className="flex flex-wrap gap-1.5 text-xs text-stone-500">
           <span className="rounded bg-stone-100 px-1.5 py-0.5">mărimea {p.marime}</span>
-          <span className="rounded bg-stone-100 px-1.5 py-0.5">{formatKg(p.grame)}</span>
+          <span className="rounded bg-stone-100 px-1.5 py-0.5">{p.stare}</span>
         </div>
 
         <div className="mt-auto pt-1">
-          <div className="flex items-baseline gap-2">
-            <span className="text-lg font-bold text-stone-900">{formatLei(pretProdus(p))}</span>
-            <span className="text-xs text-stone-500">
-              {formatKg(p.grame)} × {leiPeKgPentru(p)} lei/kg
-            </span>
-          </div>
+          <span className="text-lg font-bold text-stone-900">{formatLei(p.pret)}</span>
         </div>
 
         <AdaugaInCos slug={p.slug} />

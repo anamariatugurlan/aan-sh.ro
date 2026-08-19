@@ -145,3 +145,28 @@ De reținut pentru Next 16: după ce adaugi o pagină nouă, tipurile de rute nu
 singure. Se rulează `npx next typegen`, altfel `tsc` se plânge de ruta nouă.
 
 **Stare: NEPUBLICAT** — lucrat local, urcat pe GitHub. Site-ul e tot în mentenanță.
+
+---
+
+## 2026-08-19 — schimbat pe preț de bucată, scoasă greutatea
+
+Proprietarul a cerut schimbarea felului în care se stabilește prețul: **nu mai e pe kilogram,
+ci pe bucată**, fiecare haină cu prețul ei. Și a cerut ca greutatea să dispară complet.
+
+Ce s-a schimbat:
+- fiecare haină are acum câmpul `pret` (lei); câmpul de greutate a fost șters din tot proiectul;
+- categoriile nu mai au preț pe kilogram; pe prima pagină apare „de la X lei", calculat din
+  cea mai ieftină haină din categorie;
+- transportul se calculează din valoarea comenzii: **20 lei, gratuit peste 250 lei**
+  (înainte se calcula din greutate);
+- aranjarea „cele mai ușoare" a dispărut, au rămas cele două după preț.
+
+**Textele au fost rescrise**, nu doar cifrele. Titlul „Alegi haina. Prețul îl spune cântarul."
+nu mai avea sens; acum e „Fiecare haină, una singură." La fel s-au schimbat descrierea site-ului,
+subsolul și pagina de mentenanță.
+
+Verificat prin cereri reale: paltonul arată 120 lei, aranjarea dă 70→120 crescător și
+120→70 descrescător, categoriile arată „de la 15/20/28/38/45/70 lei", iar căutarea după
+„kilogram", „cântar" sau „greutate" nu mai găsește nimic în paginile livrate.
+
+**Stare: NEPUBLICAT**, tot în mentenanță.

@@ -5,12 +5,10 @@ import { useState } from "react";
 import { Poza } from "@/components/poza";
 import { useCos } from "@/components/cos-context";
 import {
+  TRANSPORT_GRATUIT_DE_LA,
   costTransport,
-  formatKg,
   formatLei,
   getProdus,
-  leiPeKgPentru,
-  pretProdus,
 } from "@/lib/shop";
 
 export default function Page() {
@@ -18,9 +16,8 @@ export default function Page() {
   const [trimisa, setTrimisa] = useState(false);
 
   const produseInCos = articole.map(getProdus).filter((p) => p !== undefined);
-  const grameTotal = produseInCos.reduce((s, p) => s + p.grame, 0);
-  const subtotal = produseInCos.reduce((s, p) => s + pretProdus(p), 0);
-  const transport = costTransport(grameTotal, subtotal);
+  const subtotal = produseInCos.reduce((s, p) => s + p.pret, 0);
+  const transport = costTransport(subtotal);
   const total = subtotal + transport;
 
   if (!incarcat) {
@@ -67,7 +64,7 @@ export default function Page() {
     <div className="mx-auto max-w-6xl px-4 py-8">
       <h1 className="text-3xl font-bold tracking-tight text-stone-900">Coșul meu</h1>
       <p className="mt-1 text-stone-600">
-        {produseInCos.length} {produseInCos.length === 1 ? "haină" : "haine"} — {formatKg(grameTotal)} în total
+        {produseInCos.length} {produseInCos.length === 1 ? "haină" : "haine"}
       </p>
 
       <div className="mt-8 grid gap-8 lg:grid-cols-[1fr_360px]">
@@ -83,7 +80,7 @@ export default function Page() {
                   {p.nume}
                 </Link>
                 <div className="mt-1 text-sm text-stone-500">
-                  mărimea {p.marime} · {formatKg(p.grame)} × {leiPeKgPentru(p)} lei/kg
+                  mărimea {p.marime} · {p.stare}
                 </div>
                 <button
                   type="button"
@@ -95,7 +92,7 @@ export default function Page() {
               </div>
 
               <div className="shrink-0 text-right text-lg font-bold text-stone-900">
-                {formatLei(pretProdus(p))}
+                {formatLei(p.pret)}
               </div>
             </div>
           ))}
@@ -114,10 +111,6 @@ export default function Page() {
 
           <dl className="mt-4 space-y-2 text-sm">
             <div className="flex justify-between">
-              <dt className="text-stone-600">Greutate totală</dt>
-              <dd className="font-medium text-stone-900">{formatKg(grameTotal)}</dd>
-            </div>
-            <div className="flex justify-between">
               <dt className="text-stone-600">Haine</dt>
               <dd className="font-medium text-stone-900">{formatLei(subtotal)}</dd>
             </div>
@@ -133,9 +126,9 @@ export default function Page() {
             </div>
           </dl>
 
-          {subtotal < 300 && (
+          {subtotal < TRANSPORT_GRATUIT_DE_LA && (
             <p className="mt-3 rounded-lg bg-orange-50 px-3 py-2 text-xs text-orange-800">
-              Mai ai {formatLei(300 - subtotal)} până la transport gratuit.
+              Mai ai {formatLei(TRANSPORT_GRATUIT_DE_LA - subtotal)} până la transport gratuit.
             </p>
           )}
 
@@ -154,7 +147,7 @@ export default function Page() {
 
             <button
               type="submit"
-              className="w-full rounded-lg bg-orange-600 px-5 py-3 font-semibold text-white transition hover:bg-orange-700"
+              className="flex min-h-12 w-full items-center justify-center rounded-lg bg-orange-600 px-5 font-semibold text-white transition hover:bg-orange-700"
             >
               Trimite comanda
             </button>
@@ -174,7 +167,7 @@ function Camp({ nume, eticheta, tip = "text" }: { nume: string; eticheta: string
         name={nume}
         type={tip}
         required
-        className="mt-1 w-full rounded-lg border border-stone-300 px-3 py-2 text-sm outline-none transition focus:border-orange-500 focus:ring-2 focus:ring-orange-100"
+        className="mt-1 min-h-11 w-full rounded-lg border border-stone-300 px-3 py-2 text-sm outline-none transition focus:border-orange-500 focus:ring-2 focus:ring-orange-100"
       />
     </label>
   );
