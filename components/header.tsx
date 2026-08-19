@@ -30,7 +30,7 @@ export function Header() {
 
         <Link
           href="/cos"
-          className="relative shrink-0 rounded-lg bg-stone-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-stone-700"
+          className="relative inline-flex min-h-11 shrink-0 items-center rounded-lg bg-stone-900 px-4 text-sm font-medium text-white transition hover:bg-stone-700"
         >
           Coș
           {incarcat && articole.length > 0 && (
@@ -47,7 +47,7 @@ export function Header() {
             <Link
               key={c.slug}
               href={`/categorie/${c.slug}`}
-              className="shrink-0 rounded-full bg-stone-100 px-3 py-1 text-xs text-stone-700"
+              className="inline-flex min-h-10 shrink-0 items-center rounded-full bg-stone-100 px-3.5 text-sm text-stone-700"
             >
               {c.nume}
             </Link>

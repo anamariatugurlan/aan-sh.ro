@@ -7,8 +7,8 @@ export function AdaugaInCos({ slug, mare = false }: { slug: string; mare?: boole
   const inCos = incarcat && contine(slug);
 
   const clase = mare
-    ? "w-full rounded-lg px-5 py-3 text-base font-semibold"
-    : "w-full rounded-md px-3 py-2 text-sm font-medium";
+    ? "flex min-h-12 w-full items-center justify-center rounded-lg px-5 py-3 text-base font-semibold"
+    : "flex min-h-11 w-full items-center justify-center rounded-md px-3 py-2.5 text-sm font-medium";
 
   return (
     <button
