@@ -1,7 +1,9 @@
 "use client";
 
 import Link from "next/link";
+import { Suspense } from "react";
 import { useCos } from "./cos-context";
+import { Cautare } from "./cautare";
 import { categorii } from "@/lib/shop";
 
 export function Header() {
@@ -9,22 +11,28 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-50 border-b border-stone-200 bg-white/90 backdrop-blur">
-      <div className="mx-auto flex max-w-6xl items-center gap-4 px-4 py-3">
+      <div className="mx-auto flex max-w-6xl items-center gap-3 px-4 py-3">
         <Link href="/" className="shrink-0 text-xl font-bold tracking-tight text-stone-900">
           aan<span className="text-orange-600">-sh</span>
         </Link>
 
-        <nav className="hidden flex-1 items-center gap-1 md:flex">
+        <nav className="hidden flex-1 items-center gap-1 lg:flex">
           {categorii.map((c) => (
             <Link
               key={c.slug}
               href={`/categorie/${c.slug}`}
-              className="rounded-md px-2.5 py-1.5 text-sm text-stone-600 transition hover:bg-stone-100 hover:text-stone-900"
+              className="rounded-md px-2 py-1.5 text-sm text-stone-600 transition hover:bg-stone-100 hover:text-stone-900"
             >
               {c.nume}
             </Link>
           ))}
         </nav>
+
+        <div className="hidden flex-1 justify-end md:flex lg:flex-none">
+          <Suspense fallback={null}>
+            <Cautare />
+          </Suspense>
+        </div>
 
         <div className="flex-1 md:hidden" />
 
@@ -41,8 +49,13 @@ export function Header() {
         </Link>
       </div>
 
-      <div className="border-t border-stone-100 md:hidden">
-        <div className="flex gap-1 overflow-x-auto px-4 py-2">
+      <div className="border-t border-stone-100 lg:hidden">
+        <div className="px-4 py-2 md:hidden">
+          <Suspense fallback={null}>
+            <Cautare mare={false} />
+          </Suspense>
+        </div>
+        <div className="flex gap-1 overflow-x-auto px-4 pb-2">
           {categorii.map((c) => (
             <Link
               key={c.slug}

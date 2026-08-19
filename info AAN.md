@@ -118,3 +118,30 @@ Nu e nimic de reparat, doar de așteptat: Vercel trece singur pe „Valid Config
 și emite singur certificatul.
 
 Magazinul merge între timp pe **https://aan-sh-ro.vercel.app**, în mentenanță.
+
+---
+
+## 2026-08-19 — căutare, filtre, starea „vândut"
+
+Adăugat în magazin, fără să fie nevoie de bază de date:
+
+- **căutare** (`/cauta`) — după nume, marcă, mărime sau categorie. Textul e normalizat,
+  deci „camasa" găsește „Cămașă". Zero rezultate primesc mesaj, nu pagină goală.
+- **filtre pe mărime** în fiecare categorie, arătând doar mărimile care chiar există acolo.
+  Mărimile se aranjează firesc: XS, S, M, L, XL, apoi cele numerice.
+- **aranjare** — preț crescător, preț descrescător, cele mai ușoare.
+- **starea „vândut"** — o haină marcată vândută dispare din magazin și din căutare,
+  fără s-o ștergi. Contează la haine unicat.
+- căsuță de căutare în bara de sus, pe telefon și pe calculator.
+
+Filtrele se țin în adresa paginii, deci un link filtrat se poate trimite pe WhatsApp
+și se deschide la fel la celălalt.
+
+Verificat prin cereri reale către server: Tricouri 3 haine → filtrat pe M rămâne 1;
+Cămăși 2 → 1 după ce una e vândută; „camasa" fără diacritice găsește „Cămașă";
+aranjarea după preț dă 25, 41 crescător și 41, 25 descrescător.
+
+De reținut pentru Next 16: după ce adaugi o pagină nouă, tipurile de rute nu se regenerează
+singure. Se rulează `npx next typegen`, altfel `tsc` se plânge de ruta nouă.
+
+**Stare: NEPUBLICAT** — lucrat local, urcat pe GitHub. Site-ul e tot în mentenanță.

@@ -1,7 +1,16 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { Suspense } from "react";
 import { CardProdus } from "@/components/card-produs";
-import { categorii, getCategorie, produseDinCategorie } from "@/lib/shop";
+import { Filtre } from "@/components/filtre";
+import {
+  categorii,
+  getCategorie,
+  marimiDinCategorie,
+  produseDinCategorie,
+  sorteaza,
+  type Sortare,
+} from "@/lib/shop";
 
 export function generateStaticParams() {
   return categorii.map((c) => ({ slug: c.slug }));
@@ -22,7 +31,14 @@ export default async function Page(props: PageProps<"/categorie/[slug]">) {
   const cat = getCategorie(slug);
   if (!cat) notFound();
 
-  const lista = produseDinCategorie(slug);
+  const cautari = await props.searchParams;
+  const marimeCeruta = typeof cautari.marime === "string" ? cautari.marime : null;
+  const sortare = (typeof cautari.sort === "string" ? cautari.sort : "noi") as Sortare;
+
+  const toate = produseDinCategorie(slug);
+  const marimi = marimiDinCategorie(slug);
+  const filtrate = marimeCeruta ? toate.filter((p) => p.marime === marimeCeruta) : toate;
+  const lista = sorteaza(filtrate, sortare);
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-8">
@@ -43,18 +59,28 @@ export default async function Page(props: PageProps<"/categorie/[slug]">) {
         </div>
       </div>
 
-      {lista.length === 0 ? (
+      {toate.length === 0 ? (
         <p className="py-16 text-center text-stone-500">Nu sunt haine în această categorie deocamdată.</p>
       ) : (
         <>
-          <p className="mt-6 text-sm text-stone-500">
-            {lista.length} {lista.length === 1 ? "haină" : "haine"} — fiecare bucată e unicat
-          </p>
-          <div className="mt-4 grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
-            {lista.map((p) => (
-              <CardProdus key={p.slug} p={p} />
-            ))}
-          </div>
+          <Suspense fallback={<div className="mt-6 h-32 rounded-xl border border-stone-200 bg-white" />}>
+            <Filtre marimi={marimi} gasite={lista.length} />
+          </Suspense>
+
+          {lista.length === 0 ? (
+            <div className="py-16 text-center">
+              <p className="text-stone-600">Nicio haină pe mărimea asta.</p>
+              <Link href={`/categorie/${slug}`} className="mt-2 inline-block text-orange-700 underline underline-offset-2">
+                Vezi toate mărimile
+              </Link>
+            </div>
+          ) : (
+            <div className="mt-6 grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
+              {lista.map((p) => (
+                <CardProdus key={p.slug} p={p} />
+              ))}
+            </div>
+          )}
         </>
       )}
     </div>
