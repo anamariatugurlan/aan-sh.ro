@@ -241,3 +241,35 @@ de servere. Dacă un domeniu nu se rezolvă deși zona pare bună, asta se verif
 Next.js are nevoie de Node.js, iar găzduirea obișnuită Hostico e pentru PHP — ar însemna
 plan mai scump, urcat manual la fiecare modificare și certificat reînnoit cu mâna.
 Hostico rămâne pentru domeniu și email; site-ul stă pe Vercel, ca la preturismart.ro.
+
+---
+
+## 2026-08-20 — domeniul e viu
+
+După schimbarea nameserverelor pe `nsa`–`nsd`, totul a intrat la locul lui:
+
+    http://aan-sh.ro  ->  308  ->  https://www.aan-sh.ro  ->  503 „Pregătim magazinul"
+
+    Certificat: www.aan-sh.ro, emis de Let's Encrypt
+    Valabil:    19 august 2026 - 17 noiembrie 2026 (se reînnoiește singur)
+
+Deci: domeniul răspunde, lacătul e pus, redirecționarea de la domeniul gol către `www`
+merge, iar mentenanța ține — lumea vede „Pregătim magazinul", cu `noindex`.
+
+**Atenție la o capcană de verificare:** de pe calculatorul proprietarului domeniul încă nu
+se rezolva, fiindcă furnizorul de internet ținea minte vechiul răspuns „nu există" din
+perioada cât delegarea era stricată. Se șterge singur în câteva ore. Verificarea corectă
+se face forțând adresa:
+
+    curl -sL --resolve "aan-sh.ro:443:216.198.79.1" --resolve "www.aan-sh.ro:443:216.198.79.1" https://aan-sh.ro
+
+Altfel pare că site-ul nu merge, deși merge pentru restul lumii.
+
+**Stare: LIVE pe aan-sh.ro, dar ÎNCHIS cu mentenanță.** Nimeni nu vede magazinul fără cheie.
+
+Ce a rămas de făcut, în ordinea importanței:
+1. comenzile să ajungă undeva (acum se pierd) — trebuie bază de date și email;
+2. pagina de administrare, ca să-și adauge clienta hainele singură;
+3. datele reale: logo, poze, categorii, prețuri;
+4. paginile obligatorii prin lege: termeni, retur, date firmă, ANPC;
+5. tema închisă, rămasă pe jumătate.
