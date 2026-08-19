@@ -89,3 +89,32 @@ gol și un CNAME la www; valorile le dă Vercel, sunt diferite de la un proiect 
 
 **Cum se dă înapoi:** în Vercel, Deployments → versiunea anterioară → Promote to Production.
 Ca să se deschidă magazinul: se șterge `MENTENANTA` sau se pune pe 0, apoi Redeploy.
+
+---
+
+## 2026-08-19 — domeniul legat la Hostico
+
+Domeniul `aan-sh.ro` a fost înregistrat chiar azi la Hostico (expiră 2027-08-19).
+Serverele de nume rămân la Hostico — s-a luat decizia asta după ce s-a văzut că domeniul
+are deja email configurat (`MX` → `mail.aan-sh.ro`). Dacă se mutau serverele la Vercel,
+emailul s-ar fi rupt.
+
+Adăugat în editorul „Hostico DNS", verificat direct pe `nsc.hostico.ro`:
+
+    aan-sh.ro        A      216.198.79.1                          <- de la Vercel
+    www.aan-sh.ro    CNAME  0abcaa89bff2a87f.vercel-dns-017.com   <- de la Vercel
+    aan-sh.ro        MX     mail.aan-sh.ro                        <- neatins
+    mail.aan-sh.ro   CNAME  aan-sh.ro                             <- neatins
+
+Vercel a pus `www.aan-sh.ro` ca adresă principală, iar `aan-sh.ro` gol trimite spre ea
+printr-o redirecționare 308 — la fel ca la preturismart.ro.
+
+Pe drum: valoarea numerică a ajuns întâi din greșeală pe rândul `www`, ca înregistrare A.
+S-a corectat — numărul merge la domeniul gol, șirul lung merge la www.
+
+**Stare la ora scrierii:** zona e corectă, dar domeniul încă nu e vizibil din exteriorul
+Hostico (înregistrat azi, propagarea `.ro` ia câteva ore). Deci `aan-sh.ro` nu răspunde încă.
+Nu e nimic de reparat, doar de așteptat: Vercel trece singur pe „Valid Configuration"
+și emite singur certificatul.
+
+Magazinul merge între timp pe **https://aan-sh-ro.vercel.app**, în mentenanță.
