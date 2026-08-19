@@ -37,31 +37,31 @@ export default async function Page(props: PageProps<"/produs/[slug]">) {
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-8">
-      <nav className="text-sm text-stone-500">
-        <Link href="/" className="hover:text-orange-700">Acasă</Link>
+      <nav className="text-sm text-sters">
+        <Link href="/" className="hover:text-accent-text">Acasă</Link>
         <span className="mx-2">/</span>
-        <Link href={`/categorie/${p.categorie}`} className="hover:text-orange-700">{cat?.nume}</Link>
+        <Link href={`/categorie/${p.categorie}`} className="hover:text-accent-text">{cat?.nume}</Link>
       </nav>
 
       <div className="mt-6 grid gap-8 md:grid-cols-2">
         <Poza slug={p.slug} nume={p.nume} clasa="aspect-[4/5] w-full rounded-2xl" />
 
         <div className="flex flex-col">
-          <h1 className="text-3xl font-bold tracking-tight text-stone-900">{p.nume}</h1>
+          <h1 className="text-3xl font-bold tracking-tight text-principal">{p.nume}</h1>
 
-          <div className="mt-5 text-4xl font-bold text-stone-900">{formatLei(p.pret)}</div>
+          <div className="mt-5 text-4xl font-bold text-principal">{formatLei(p.pret)}</div>
 
           <div className="mt-5 flex flex-wrap gap-2 text-sm">
-            <span className="rounded-lg bg-stone-100 px-3 py-1.5 text-stone-700">mărimea {p.marime}</span>
-            <span className="rounded-lg bg-stone-100 px-3 py-1.5 text-stone-700">stare {p.stare}</span>
-            {p.marca && <span className="rounded-lg bg-stone-100 px-3 py-1.5 text-stone-700">{p.marca}</span>}
+            <span className="rounded-lg bg-suprafata-slaba px-3 py-1.5 text-secundar">mărimea {p.marime}</span>
+            <span className="rounded-lg bg-suprafata-slaba px-3 py-1.5 text-secundar">stare {p.stare}</span>
+            {p.marca && <span className="rounded-lg bg-suprafata-slaba px-3 py-1.5 text-secundar">{p.marca}</span>}
           </div>
 
           <div className="mt-6">
             <AdaugaInCos slug={p.slug} mare />
           </div>
 
-          <ul className="mt-6 space-y-2 border-t border-stone-200 pt-5 text-sm text-stone-600">
+          <ul className="mt-6 space-y-2 border-t border-linie pt-5 text-sm text-secundar">
             <li>Bucată unică — odată vândută, dispare de pe site.</li>
             <li>Plata ramburs, la primirea coletului.</li>
             <li>
@@ -73,7 +73,7 @@ export default async function Page(props: PageProps<"/produs/[slug]">) {
 
       {altele.length > 0 && (
         <section className="mt-16">
-          <h2 className="text-xl font-bold tracking-tight text-stone-900">
+          <h2 className="text-xl font-bold tracking-tight text-principal">
             Alte {cat?.nume.toLowerCase()}
           </h2>
           <div className="mt-4 grid grid-cols-2 gap-4 md:grid-cols-4">

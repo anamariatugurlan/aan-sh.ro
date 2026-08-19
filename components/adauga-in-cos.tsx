@@ -16,8 +16,8 @@ export function AdaugaInCos({ slug, mare = false }: { slug: string; mare?: boole
       onClick={() => (inCos ? scoate(slug) : adauga(slug))}
       className={`${clase} transition ${
         inCos
-          ? "bg-stone-200 text-stone-700 hover:bg-stone-300"
-          : "bg-orange-600 text-white hover:bg-orange-700"
+          ? "bg-linie text-secundar hover:bg-linie"
+          : "bg-accent text-pe-accent hover:bg-accent-tare"
       }`}
     >
       {inCos ? "Scoate din coș" : "Adaugă în coș"}

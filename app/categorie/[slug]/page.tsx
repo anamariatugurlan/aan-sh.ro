@@ -42,31 +42,31 @@ export default async function Page(props: PageProps<"/categorie/[slug]">) {
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-8">
-      <nav className="text-sm text-stone-500">
-        <Link href="/" className="hover:text-orange-700">Acasă</Link>
+      <nav className="text-sm text-sters">
+        <Link href="/" className="hover:text-accent-text">Acasă</Link>
         <span className="mx-2">/</span>
-        <span className="text-stone-700">{cat.nume}</span>
+        <span className="text-secundar">{cat.nume}</span>
       </nav>
 
-      <div className="mt-4 flex flex-wrap items-end justify-between gap-4 border-b border-stone-200 pb-6">
+      <div className="mt-4 flex flex-wrap items-end justify-between gap-4 border-b border-linie pb-6">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight text-stone-900">{cat.nume}</h1>
-          <p className="mt-1 text-stone-600">{cat.descriere}</p>
+          <h1 className="text-3xl font-bold tracking-tight text-principal">{cat.nume}</h1>
+          <p className="mt-1 text-secundar">{cat.descriere}</p>
         </div>
       </div>
 
       {toate.length === 0 ? (
-        <p className="py-16 text-center text-stone-500">Nu sunt haine în această categorie deocamdată.</p>
+        <p className="py-16 text-center text-sters">Nu sunt haine în această categorie deocamdată.</p>
       ) : (
         <>
-          <Suspense fallback={<div className="mt-6 h-32 rounded-xl border border-stone-200 bg-white" />}>
+          <Suspense fallback={<div className="mt-6 h-32 rounded-xl border border-linie bg-suprafata" />}>
             <Filtre marimi={marimi} gasite={lista.length} />
           </Suspense>
 
           {lista.length === 0 ? (
             <div className="py-16 text-center">
-              <p className="text-stone-600">Nicio haină pe mărimea asta.</p>
-              <Link href={`/categorie/${slug}`} className="mt-2 inline-block text-orange-700 underline underline-offset-2">
+              <p className="text-secundar">Nicio haină pe mărimea asta.</p>
+              <Link href={`/categorie/${slug}`} className="mt-2 inline-block text-accent-text underline underline-offset-2">
                 Vezi toate mărimile
               </Link>
             </div>

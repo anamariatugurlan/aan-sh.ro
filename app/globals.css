@@ -1,15 +1,70 @@
 @import "tailwindcss";
 
-@theme inline {
+/* Culorile se definesc o singura data, direct ca tokenuri Tailwind.
+   Tema inchisa le rescrie pe aceleasi nume, deci se schimba peste tot deodata.
+   Fara "inline" - altfel Tailwind ingheata valorile la construire si tema nu mai comuta. */
+
+@theme {
   --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+
+  --color-fundal: #faf9f7;
+  --color-suprafata: #ffffff;
+  --color-suprafata-slaba: #f5f5f4;
+  --color-principal: #1c1917;
+  --color-secundar: #57534e;
+  --color-sters: #a8a29e;
+  --color-linie: #e7e5e4;
+  --color-linie-slaba: #f5f5f4;
+  --color-accent: #ea580c;
+  --color-accent-tare: #c2410c;
+  --color-accent-text: #c2410c;
+  --color-accent-slab: #fff7ed;
+  --color-pe-accent: #ffffff;
+  --color-contrast: #1c1917;
+  --color-pe-contrast: #ffffff;
+  --color-pericol: #dc2626;
+}
+
+:root[data-theme="dark"] {
+  --color-fundal: #14100e;
+  --color-suprafata: #1f1a17;
+  --color-suprafata-slaba: #2a2320;
+  --color-principal: #f5f5f4;
+  --color-secundar: #b8b0aa;
+  --color-sters: #7d746e;
+  --color-linie: #332b27;
+  --color-linie-slaba: #262019;
+  --color-accent: #f97316;
+  --color-accent-tare: #ea580c;
+  --color-accent-text: #fb923c;
+  --color-accent-slab: #2b1a0e;
+  --color-pe-accent: #1a1310;
+  --color-contrast: #f5f5f4;
+  --color-pe-contrast: #1c1917;
+  --color-pericol: #f87171;
 }
 
 html {
   -webkit-text-size-adjust: 100%;
+  color-scheme: light;
+}
+
+html[data-theme="dark"] {
+  color-scheme: dark;
 }
 
 body {
-  background: #faf9f7;
-  color: #1c1917;
+  background: var(--color-fundal);
+  color: var(--color-principal);
+}
+
+/* Iconita comutatorului de tema: o alege CSS-ul, ca sa nu tinem stare in JavaScript. */
+.doar-inchis {
+  display: none;
+}
+:root[data-theme="dark"] .doar-inchis {
+  display: block;
+}
+:root[data-theme="dark"] .doar-luminos {
+  display: none;
 }

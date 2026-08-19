@@ -170,3 +170,38 @@ Verificat prin cereri reale: paltonul arată 120 lei, aranjarea dă 70→120 cre
 „kilogram", „cântar" sau „greutate" nu mai găsește nimic în paginile livrate.
 
 **Stare: NEPUBLICAT**, tot în mentenanță.
+
+---
+
+## 2026-08-19 — temă închisă: început, NETERMINAT
+
+Cerut de proprietar: comutator de temă luminos/închis, ca la preturismart.ro.
+
+**Ce e gata:**
+- toate culorile scrise de mână (stone-*, orange-*, white) au fost înlocuite cu tokenuri
+  cu nume românești: `bg-suprafata`, `text-principal`, `border-linie`, `bg-accent`,
+  `bg-contrast`, `text-sters` și așa mai departe. 11 fișiere din 14 au fost schimbate;
+  n-a mai rămas nicio culoare scrisă direct, în afară de `text-white/70` din poza de
+  așezare, care stă peste un degrade colorat și e corectă pe ambele teme.
+- comutator în bara de sus, cu soare și lună;
+- alegerea se ține în `localStorage` (cheia `aan-sh-tema`) și, la prima vizită, se ia
+  după setarea sistemului;
+- un script mic rulează înainte de afișare, ca să nu palpâie alb la încărcare;
+- iconița se alege din CSS, nu din JavaScript — altfel React 19 se plânge de stare
+  schimbată într-un efect, aceeași regulă care ne-a dat bătaie de cap la coș.
+
+**Ce NU merge încă:**
+Fundalul paginii și culoarea textului comută corect. Dar butoanele, cardurile și
+celelalte suprafețe rămân pe culorile luminoase, chiar dacă variabila `--color-contrast`
+își schimbă valoarea corect (verificat în browser: `#1c1917` pe luminos, `#f5f5f4` pe
+închis), iar regula generată arată corect: `.bg-contrast{background-color:var(--color-contrast)}`.
+
+Deci variabila se schimbă, regula o folosește, dar culoarea afișată rămâne aceeași.
+Verificat și pe varianta de producție, nu doar pe serverul de probă — aceeași purtare.
+Prima încercare folosea `@theme inline`, care îngheață valorile la construire; s-a trecut
+pe `@theme` simplu, cu tema închisă rescriind aceleași nume de variabile. Nu a fost de ajuns.
+
+**De reluat de aici.** Până se rezolvă, site-ul arată normal pe tema luminoasă —
+nimic nu e stricat pentru vizitator.
+
+**Stare: NEPUBLICAT.** Site-ul de pe Vercel e tot în mentenanță și nu are schimbările astea.

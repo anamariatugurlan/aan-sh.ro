@@ -32,18 +32,18 @@ export function Filtre({ marimi, gasite }: { marimi: string[]; gasite: number })
   const areFiltre = marimeAleasa !== null || sortareAleasa !== "noi";
 
   return (
-    <div className="mt-6 rounded-xl border border-stone-200 bg-white p-4">
+    <div className="mt-6 rounded-xl border border-linie bg-suprafata p-4">
       {marimi.length > 1 && (
         <div>
-          <div className="text-xs font-semibold uppercase tracking-wide text-stone-500">Mărimea</div>
+          <div className="text-xs font-semibold uppercase tracking-wide text-sters">Mărimea</div>
           <div className="mt-2 flex flex-wrap gap-2">
             <button
               type="button"
               onClick={() => schimba("marime", null)}
               className={`inline-flex min-h-10 items-center rounded-full px-4 text-sm transition ${
                 marimeAleasa === null
-                  ? "bg-stone-900 text-white"
-                  : "bg-stone-100 text-stone-700 hover:bg-stone-200"
+                  ? "bg-contrast text-pe-contrast"
+                  : "bg-suprafata-slaba text-secundar hover:bg-linie"
               }`}
             >
               Toate
@@ -55,8 +55,8 @@ export function Filtre({ marimi, gasite }: { marimi: string[]; gasite: number })
                 onClick={() => schimba("marime", marimeAleasa === m ? null : m)}
                 className={`inline-flex min-h-10 items-center rounded-full px-4 text-sm transition ${
                   marimeAleasa === m
-                    ? "bg-stone-900 text-white"
-                    : "bg-stone-100 text-stone-700 hover:bg-stone-200"
+                    ? "bg-contrast text-pe-contrast"
+                    : "bg-suprafata-slaba text-secundar hover:bg-linie"
                 }`}
               >
                 {m}
@@ -66,13 +66,13 @@ export function Filtre({ marimi, gasite }: { marimi: string[]; gasite: number })
         </div>
       )}
 
-      <div className="mt-4 flex flex-wrap items-center justify-between gap-3 border-t border-stone-100 pt-4">
+      <div className="mt-4 flex flex-wrap items-center justify-between gap-3 border-t border-linie-slaba pt-4">
         <label className="flex items-center gap-2 text-sm">
-          <span className="text-stone-600">Aranjează:</span>
+          <span className="text-secundar">Aranjează:</span>
           <select
             value={sortareAleasa}
             onChange={(e) => schimba("sort", e.target.value === "noi" ? null : e.target.value)}
-            className="min-h-10 rounded-lg border border-stone-300 bg-white px-3 text-sm text-stone-800 outline-none focus:border-orange-500"
+            className="min-h-10 rounded-lg border border-linie bg-suprafata px-3 text-sm text-principal outline-none focus:border-accent"
           >
             {SORTARI.map((s) => (
               <option key={s.valoare} value={s.valoare}>
@@ -83,14 +83,14 @@ export function Filtre({ marimi, gasite }: { marimi: string[]; gasite: number })
         </label>
 
         <div className="flex items-center gap-3">
-          <span className="text-sm text-stone-500">
+          <span className="text-sm text-sters">
             {gasite} {gasite === 1 ? "haină" : "haine"}
           </span>
           {areFiltre && (
             <button
               type="button"
               onClick={() => router.replace(cale, { scroll: false })}
-              className="text-sm text-stone-500 underline underline-offset-2 hover:text-orange-700"
+              className="text-sm text-sters underline underline-offset-2 hover:text-accent-text"
             >
               Șterge filtrele
             </button>
