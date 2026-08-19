@@ -205,3 +205,39 @@ pe `@theme` simplu, cu tema închisă rescriind aceleași nume de variabile. Nu 
 nimic nu e stricat pentru vizitator.
 
 **Stare: NEPUBLICAT.** Site-ul de pe Vercel e tot în mentenanță și nu are schimbările astea.
+
+---
+
+## 2026-08-20 — de ce nu mergea domeniul: seturi de nameservere nepotrivite
+
+Domeniul nu răspundea deloc, deși zona DNS de la Hostico era corectă. Nu era răbdare —
+era o nepotrivire care nu s-ar fi rezolvat de la sine niciodată.
+
+**Hostico are două seturi de servere de nume**, iar domeniul era trimis către cel greșit:
+
+    registrul .ro trimitea lumea catre:   ns1, ns2, ns3, ns4.hostico.ro
+    dar inregistrarile erau puse pe:      nsa, nsb, nsc, nsd.hostico.ro
+
+Întrebate una câte una, `ns1`–`ns4` nu știau nimic despre domeniu, iar `nsa`–`nsd`
+răspundeau corect cu `216.198.79.1`. Pentru comparație, `preturismart.ro` — care merge —
+e delegat exact către `nsa`–`nsd`.
+
+**Cum s-a găsit:** interogare fără recursie direct la un server al registrului `.ro`
+(`nslookup -norecurse -type=ns aan-sh.ro dns-at.rotld.ro`), apoi întrebate toate cele opt
+servere Hostico pe rând. Interogările obișnuite nu arătau nimic — dădeau aceeași eroare
+și pentru un domeniu care funcționa, deci nu spuneau nimic.
+
+**Reparat:** proprietarul a schimbat nameserverele în panoul Hostico din `ns1`–`ns4`
+în `nsa`–`nsd`. Zona DNS nu s-a atins, era corectă.
+
+**Imediat după:** registrul arată `nsa`–`nsd`, `aan-sh.ro` se rezolvă la `216.198.79.1`,
+iar `www.aan-sh.ro` merge prin CNAME la Vercel. Rămâne de așteptat certificatul de
+securitate, pe care Vercel îl emite singur.
+
+**De reținut:** la Hostico, zona DNS și delegarea domeniului pot ajunge pe seturi diferite
+de servere. Dacă un domeniu nu se rezolvă deși zona pare bună, asta se verifică prima dată.
+
+**Despre mutarea site-ului pe Hostico** (întrebare a proprietarului): nu se recomandă.
+Next.js are nevoie de Node.js, iar găzduirea obișnuită Hostico e pentru PHP — ar însemna
+plan mai scump, urcat manual la fiecare modificare și certificat reînnoit cu mâna.
+Hostico rămâne pentru domeniu și email; site-ul stă pe Vercel, ca la preturismart.ro.
