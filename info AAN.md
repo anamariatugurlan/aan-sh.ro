@@ -437,3 +437,37 @@ acasa, /grup/dama, /categorie/geci, /categorie/pantaloni — toate se deschid.
 Fara cont si fara cheie: mentenanta, ca inainte. Bilet falsificat: mentenanta.
 
 **Stare: PUBLICAT**, commit `d7c17e4` (tot cu categoriile). `git revert d7c17e4`.
+
+---
+
+## 22 august 2026 — pregatit pentru adaugarea hainelor din administrare
+
+Cerinta proprietarului: adminii (singurele conturi de pe site — nu exista conturi de
+clienti) sa poata adauga, modifica si sterge haine, cu poze, si sa aleaga singuri in ce
+categorie si subcategorie intra.
+
+Asta nu se poate face fara baza de date: pe Vercel codul nu se poate rescrie singur.
+S-a ales Supabase (gratuit, proprietarul are deja cont de la preturismart). Important:
+cele doua chei de care e nevoie NU sunt secrete — cheia „anon" e facuta ca sa stea la
+vedere in site, iar datele sunt aparate de regulile din baza de date (RLS): oricine
+citeste, doar cine e conectat scrie. Deci nu se repeta problema cu setarile de pe Vercel.
+
+Ce s-a facut acum, fara sa fie nevoie de nimic din afara:
+
+- `lib/depozit.ts` — un singur loc de unde vin hainele. Cat timp baza de date nu e
+  legata, site-ul merge cu hainele de proba; cand apar cheile, trece pe Supabase fara
+  sa se schimbe nicio pagina.
+- `baza-de-date.sql` — de lipit o data in Supabase (SQL Editor -> Run). Face tabelul de
+  haine, regulile de acces si locul unde stau pozele.
+- `components/alege-categoria.tsx` — alegerea in trei trepte: grup, categorie,
+  subcategorie. Haina intra in subcategorie daca s-a ales una, altfel in categoria mare.
+- Panoul de administrare spune limpede ce lipseste si arata cei patru pasi. Butonul
+  „Adauga o haina" apare singur cand baza de date e legata.
+
+**Pasii proprietarului:** proiect nou pe supabase.com (aan-sh, Frankfurt); lipit
+`baza-de-date.sql` in SQL Editor; adaugat cele trei e-mailuri in Authentication -> Users;
+trimis „Project URL" si cheia „anon public" din Settings -> API.
+
+**Stare: PUBLICAT**, commit `49fa0e6`. `git revert 49fa0e6`.
+Ce ramane dupa ce vin cheile: formularul de adaugare cu poze, editarea, stergerea,
+marcarea ca vandut, si mutarea intrarii in administrare pe conturile din Supabase.
