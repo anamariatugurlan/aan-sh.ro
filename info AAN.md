@@ -316,7 +316,9 @@ ajungă și pe GitHub, altfel instrucțiunile se pierdeau).
 Conturile se citesc dintr-un singur loc, `lib/admin-cont.ts`. Când trecem pe Supabase se
 schimbă doar fișierul ăla; paginile și sesiunea rămân neatinse.
 
-**Stare: NEPUBLICAT.** Merge doar pe calculator. Ca să ajungă live trebuie și puse
+**Stare: PUBLICAT** pe 22 august 2026, commit `4a73c8b`. Dat înapoi cu `git revert 4a73c8b`.
+Verificat pe site-ul adevărat: `/admin` trimite la intrare, formularul răspunde, magazinul
+a rămas în mentenanță. Ca să poată intra cineva trebuie și puse
 setările pe Vercel (`ADMIN_1_EMAIL`, `ADMIN_1_PAROLA_HASH`, `ADMIN_2_EMAIL`,
 `ADMIN_2_PAROLA_HASH`, `SESIUNE_SECRET`) — fără ele, nimeni nu poate intra.
 Dat înapoi cu `git revert <hash>` după publicare.
