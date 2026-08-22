@@ -7,6 +7,7 @@
 
 import { createHmac, timingSafeEqual } from "node:crypto";
 import { cookies } from "next/headers";
+import { SECRET_TEMPORAR } from "./admin-conturi-temporare";
 
 export const COOKIE_ADMIN = "aan-sh-admin";
 
@@ -16,12 +17,10 @@ type Continut = { u: string; exp: number };
 
 function cheie(): string {
   const s = process.env.SESIUNE_SECRET;
-  if (!s || s.length < 16) {
-    throw new Error(
-      "Lipsește SESIUNE_SECRET (minim 16 caractere). Vezi .env.example.",
-    );
-  }
-  return s;
+  if (s && s.length >= 16) return s;
+
+  // Nimic în setări? Atunci cheia temporară din cod — vezi admin-conturi-temporare.ts.
+  return SECRET_TEMPORAR;
 }
 
 function semneaza(text: string): string {

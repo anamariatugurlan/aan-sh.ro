@@ -22,7 +22,7 @@ export async function generateMetadata(props: PageProps<"/categorie/[slug]">) {
   if (!cat) return {};
   return {
     title: cat.nume,
-    description: `${cat.nume} second hand, bucatÄ cu bucatÄ. ${cat.descriere}`,
+    description: `${cat.nume} second hand, bucată cu bucată. ${cat.descriere}`,
   };
 }
 

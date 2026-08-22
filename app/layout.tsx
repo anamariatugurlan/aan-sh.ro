@@ -12,7 +12,7 @@ const geistSans = Geist({
 
 export const metadata: Metadata = {
   title: {
-    default: "aan-sh.ro — haine second hand, bucatÄ cu bucatÄ",
+    default: "aan-sh.ro — haine second hand, bucată cu bucată",
     template: "%s — aan-sh.ro",
   },
   description:

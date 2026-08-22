@@ -13,6 +13,7 @@
 // conturile în baza de date. Paginile, sesiunea și formularul rămân neatinse.
 
 import { parolaEBuna } from "./parola";
+import { CONTURI_TEMPORARE } from "./admin-conturi-temporare";
 
 const LOCURI = 5;
 
@@ -29,6 +30,17 @@ function conturiSalvate(): ContSalvat[] {
       conturi.push({ email: email.trim().toLowerCase(), amprenta });
     }
   }
+
+  // Nimic în setări? Atunci lista temporară din cod — vezi admin-conturi-temporare.ts.
+  // Setările au întotdeauna prioritate: de îndată ce apar acolo, lista din cod nu se
+  // mai citește deloc.
+  if (conturi.length === 0) {
+    return CONTURI_TEMPORARE.map((c) => ({
+      email: c.email.trim().toLowerCase(),
+      amprenta: c.amprenta,
+    }));
+  }
+
   return conturi;
 }
 
