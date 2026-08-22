@@ -5,7 +5,7 @@ import { Suspense } from "react";
 import { useCos } from "./cos-context";
 import { Cautare } from "./cautare";
 import { ComutatorTema } from "./tema";
-import { categorii } from "@/lib/shop";
+import { grupuri } from "@/lib/shop";
 
 export function Header() {
   const { articole, incarcat } = useCos();
@@ -18,13 +18,13 @@ export function Header() {
         </Link>
 
         <nav className="hidden flex-1 items-center gap-1 lg:flex">
-          {categorii.map((c) => (
+          {grupuri.map((g) => (
             <Link
-              key={c.slug}
-              href={`/categorie/${c.slug}`}
-              className="rounded-md px-2 py-1.5 text-sm text-secundar transition hover:bg-suprafata-slaba hover:text-principal"
+              key={g.slug}
+              href={`/grup/${g.slug}`}
+              className="rounded-md px-2.5 py-1.5 text-sm text-secundar transition hover:bg-suprafata-slaba hover:text-principal"
             >
-              {c.nume}
+              {g.nume}
             </Link>
           ))}
         </nav>
@@ -59,13 +59,13 @@ export function Header() {
           </Suspense>
         </div>
         <div className="flex gap-1 overflow-x-auto px-4 pb-2">
-          {categorii.map((c) => (
+          {grupuri.map((g) => (
             <Link
-              key={c.slug}
-              href={`/categorie/${c.slug}`}
+              key={g.slug}
+              href={`/grup/${g.slug}`}
               className="inline-flex min-h-10 shrink-0 items-center rounded-full bg-suprafata-slaba px-3.5 text-sm text-secundar"
             >
-              {c.nume}
+              {g.nume}
             </Link>
           ))}
         </div>

@@ -6,9 +6,11 @@ import { Filtre } from "@/components/filtre";
 import {
   categorii,
   getCategorie,
+  getGrup,
   marimiDinCategorie,
   produseDinCategorie,
   sorteaza,
+  subcategorii,
   type Sortare,
 } from "@/lib/shop";
 
@@ -31,6 +33,10 @@ export default async function Page(props: PageProps<"/categorie/[slug]">) {
   const cat = getCategorie(slug);
   if (!cat) notFound();
 
+  const grup = getGrup(cat.grup);
+  const parinte = cat.parinte ? getCategorie(cat.parinte) : undefined;
+  const copii = subcategorii(cat.slug);
+
   const cautari = await props.searchParams;
   const marimeCeruta = typeof cautari.marime === "string" ? cautari.marime : null;
   const sortare = (typeof cautari.sort === "string" ? cautari.sort : "noi") as Sortare;
@@ -45,6 +51,22 @@ export default async function Page(props: PageProps<"/categorie/[slug]">) {
       <nav className="text-sm text-sters">
         <Link href="/" className="hover:text-accent-text">Acasă</Link>
         <span className="mx-2">/</span>
+        {grup && (
+          <>
+            <Link href={`/grup/${grup.slug}`} className="hover:text-accent-text">
+              {grup.nume}
+            </Link>
+            <span className="mx-2">/</span>
+          </>
+        )}
+        {parinte && (
+          <>
+            <Link href={`/categorie/${parinte.slug}`} className="hover:text-accent-text">
+              {parinte.nume}
+            </Link>
+            <span className="mx-2">/</span>
+          </>
+        )}
         <span className="text-secundar">{cat.nume}</span>
       </nav>
 
@@ -54,6 +76,20 @@ export default async function Page(props: PageProps<"/categorie/[slug]">) {
           <p className="mt-1 text-secundar">{cat.descriere}</p>
         </div>
       </div>
+
+      {copii.length > 0 && (
+        <div className="mt-6 flex flex-wrap gap-2">
+          {copii.map((s) => (
+            <Link
+              key={s.slug}
+              href={`/categorie/${s.slug}`}
+              className="inline-flex min-h-10 items-center rounded-full border border-linie bg-suprafata px-4 text-sm text-secundar transition hover:border-accent hover:text-accent-text"
+            >
+              {s.nume}
+            </Link>
+          ))}
+        </div>
+      )}
 
       {toate.length === 0 ? (
         <p className="py-16 text-center text-sters">Nu sunt haine în această categorie deocamdată.</p>

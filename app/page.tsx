@@ -2,9 +2,10 @@ import Link from "next/link";
 import { CardProdus } from "@/components/card-produs";
 import {
   TRANSPORT_GRATUIT_DE_LA,
-  categorii,
+  cateProduseInGrup,
+  categoriiDinGrup,
   formatLei,
-  pretMinimCategorie,
+  grupuri,
   produseDeVanzare,
 } from "@/lib/shop";
 
@@ -48,24 +49,33 @@ export default function Page() {
       <section id="categorii" className="mx-auto max-w-6xl px-4 py-12">
         <h2 className="text-2xl font-bold tracking-tight text-principal">Categorii</h2>
 
-        <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {categorii.map((c) => {
-            const minim = pretMinimCategorie(c.slug);
+        <div className="mt-6 grid gap-4 sm:grid-cols-2">
+          {grupuri.map((g) => {
+            const mari = categoriiDinGrup(g.slug);
+            const cate = cateProduseInGrup(g.slug);
             return (
               <Link
-                key={c.slug}
-                href={`/categorie/${c.slug}`}
+                key={g.slug}
+                href={`/grup/${g.slug}`}
                 className="group rounded-xl border border-linie bg-suprafata p-5 transition hover:border-accent hover:shadow-sm"
               >
                 <div className="flex items-start justify-between gap-3">
-                  <h3 className="font-semibold text-principal group-hover:text-accent-text">{c.nume}</h3>
-                  {minim !== null && (
+                  <h3 className="text-lg font-semibold text-principal group-hover:text-accent-text">
+                    {g.nume}
+                  </h3>
+                  {cate > 0 && (
                     <span className="shrink-0 rounded-full bg-accent-slab px-3 py-1 text-sm font-bold text-accent-text">
-                      de la {minim} lei
+                      {cate} {cate === 1 ? "haină" : "haine"}
                     </span>
                   )}
                 </div>
-                <p className="mt-2 text-sm text-secundar">{c.descriere}</p>
+                <p className="mt-2 text-sm text-secundar">{g.descriere}</p>
+                {mari.length > 0 && (
+                  <p className="mt-3 text-sm text-sters">
+                    {mari.slice(0, 6).map((c) => c.nume).join(" · ")}
+                    {mari.length > 6 ? " și altele" : ""}
+                  </p>
+                )}
               </Link>
             );
           })}

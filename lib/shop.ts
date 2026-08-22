@@ -1,10 +1,25 @@
 // Datele magazinului. Deocamdata scrise aici, ca sa mearga site-ul fara baza de date.
 // Cand trecem pe Supabase, se schimba doar functiile de mai jos, nu si paginile.
 
+/** Grupurile mari din meniu: Damă, Accesorii, Ocazie, Bărbați. */
+export type Grup = {
+  slug: string;
+  nume: string;
+  descriere: string;
+};
+
+/**
+ * Categoriile stau in arbore, pe trei niveluri:
+ *   grup (Articole dama)  ->  categorie (Geci)  ->  subcategorie (Geci ski)
+ * O categorie fara subcategorii (Blugi, Rochii) e ultimul nivel si tine haine direct.
+ * `parinte` lipseste la categoriile mari si arata catre ele la subcategorii.
+ */
 export type Categorie = {
   slug: string;
   nume: string;
   descriere: string;
+  grup: string; // slug de grup
+  parinte?: string; // slug de categorie mare
 };
 
 export type Produs = {
@@ -18,43 +33,136 @@ export type Produs = {
   vandut?: boolean;
 };
 
-export const categorii: Categorie[] = [
-  { slug: "tricouri", nume: "Tricouri și bluze", descriere: "Bumbac, mânecă scurtă și lungă." },
-  { slug: "camasi", nume: "Cămăși", descriere: "Bărbați și damă, bumbac și in." },
-  { slug: "blugi", nume: "Blugi și pantaloni", descriere: "Denim și stofă, toate mărimile." },
-  { slug: "geci", nume: "Geci și paltoane", descriere: "Iarnă și demisezon." },
-  { slug: "tricotaje", nume: "Pulovere și tricotaje", descriere: "Lână, bumbac, amestec." },
-  { slug: "copii", nume: "Haine copii", descriere: "De la 2 la 14 ani." },
+export const grupuri: Grup[] = [
+  { slug: "dama", nume: "Articole damă", descriere: "Haine de damă, alese bucată cu bucată." },
+  { slug: "accesorii", nume: "Accesorii", descriere: "Căciuli, eșarfe, mănuși și restul." },
+  { slug: "ocazie", nume: "Articole ocazie", descriere: "Ținute pentru evenimente." },
+  { slug: "barbati", nume: "Articole bărbați", descriere: "Haine de bărbați." },
 ];
 
+export const categorii: Categorie[] = [
+  // ================= Articole damă =================
+  { slug: "bluze", nume: "Bluze", descriere: "", grup: "dama" },
+  { slug: "bluze-maneca-lunga", nume: "Bluze mânecă lungă", descriere: "", grup: "dama", parinte: "bluze" },
+  { slug: "bluze-trening", nume: "Bluze trening", descriere: "", grup: "dama", parinte: "bluze" },
+  { slug: "bluze-termo", nume: "Bluze termo", descriere: "", grup: "dama", parinte: "bluze" },
+
+  { slug: "camasi", nume: "Cămăși", descriere: "", grup: "dama" },
+  { slug: "camasi-in", nume: "Cămăși in", descriere: "", grup: "dama", parinte: "camasi" },
+  { slug: "camasi-maneca-scurta", nume: "Cămăși mânecă scurtă", descriere: "", grup: "dama", parinte: "camasi" },
+  { slug: "camasi-maneca-lunga", nume: "Cămăși mânecă lungă", descriere: "", grup: "dama", parinte: "camasi" },
+
+  { slug: "geci", nume: "Geci", descriere: "", grup: "dama" },
+  { slug: "geci-blugi", nume: "Geci blugi", descriere: "", grup: "dama", parinte: "geci" },
+  { slug: "geci-imitatie-piele", nume: "Geci imitație piele", descriere: "", grup: "dama", parinte: "geci" },
+  { slug: "geci-subtiri", nume: "Geci subțiri", descriere: "", grup: "dama", parinte: "geci" },
+  { slug: "geci-groase", nume: "Geci groase", descriere: "", grup: "dama", parinte: "geci" },
+  { slug: "geci-vant", nume: "Geci vânt", descriere: "", grup: "dama", parinte: "geci" },
+  { slug: "geci-ski", nume: "Geci ski", descriere: "", grup: "dama", parinte: "geci" },
+
+  { slug: "hanorace", nume: "Hanorace", descriere: "", grup: "dama" },
+  { slug: "hanorace-cu-gluga", nume: "Hanorace cu glugă", descriere: "", grup: "dama", parinte: "hanorace" },
+  { slug: "hanorace-fara-gluga", nume: "Hanorace fără glugă", descriere: "", grup: "dama", parinte: "hanorace" },
+
+  { slug: "pantaloni", nume: "Pantaloni", descriere: "", grup: "dama" },
+  { slug: "pantaloni-scurti", nume: "Pantaloni scurți", descriere: "", grup: "dama", parinte: "pantaloni" },
+  { slug: "pantaloni-trening", nume: "Pantaloni trening", descriere: "", grup: "dama", parinte: "pantaloni" },
+  { slug: "pantaloni-vant", nume: "Pantaloni vânt", descriere: "", grup: "dama", parinte: "pantaloni" },
+  { slug: "pantaloni-fas", nume: "Pantaloni fâș", descriere: "", grup: "dama", parinte: "pantaloni" },
+  { slug: "pantaloni-ski", nume: "Pantaloni ski", descriere: "", grup: "dama", parinte: "pantaloni" },
+  { slug: "pantaloni-fashion", nume: "Pantaloni fashion", descriere: "", grup: "dama", parinte: "pantaloni" },
+  { slug: "pantaloni-vascoza", nume: "Pantaloni vâscoză", descriere: "", grup: "dama", parinte: "pantaloni" },
+  { slug: "pantaloni-in", nume: "Pantaloni in", descriere: "", grup: "dama", parinte: "pantaloni" },
+
+  { slug: "pulovere", nume: "Pulovere", descriere: "", grup: "dama" },
+  { slug: "pulovere-subtiri", nume: "Pulovere subțiri", descriere: "", grup: "dama", parinte: "pulovere" },
+  { slug: "pulovere-groase", nume: "Pulovere groase", descriere: "", grup: "dama", parinte: "pulovere" },
+
+  // fără subcategorii
+  { slug: "blugi", nume: "Blugi", descriere: "", grup: "dama" },
+  { slug: "colanti", nume: "Colanți", descriere: "", grup: "dama" },
+  { slug: "fuste", nume: "Fuste", descriere: "", grup: "dama" },
+  { slug: "rochii", nume: "Rochii", descriere: "", grup: "dama" },
+  { slug: "sacouri", nume: "Sacouri", descriere: "", grup: "dama" },
+  { slug: "tricouri", nume: "Tricouri", descriere: "", grup: "dama" },
+  { slug: "maieuri", nume: "Maieuri", descriere: "", grup: "dama" },
+  { slug: "paltoane", nume: "Paltoane", descriere: "", grup: "dama" },
+  { slug: "haine-munca", nume: "Haine muncă", descriere: "", grup: "dama" },
+  { slug: "posete", nume: "Poșete", descriere: "", grup: "dama" },
+  { slug: "genti-sport", nume: "Genți sport", descriere: "", grup: "dama" },
+
+  // ================= Accesorii =================
+  { slug: "caciuli", nume: "Căciuli", descriere: "", grup: "accesorii" },
+  { slug: "esarfe", nume: "Eșarfe", descriere: "", grup: "accesorii" },
+  { slug: "fulare", nume: "Fulare", descriere: "", grup: "accesorii" },
+  { slug: "manusi", nume: "Mănuși", descriere: "", grup: "accesorii" },
+  { slug: "palarii", nume: "Pălării", descriere: "", grup: "accesorii" },
+  { slug: "sepci", nume: "Șepci", descriere: "", grup: "accesorii" },
+  { slug: "sosete", nume: "Șosete", descriere: "", grup: "accesorii" },
+
+  // ===== Ocazie și bărbați: subcategoriile urmează, când le trimite proprietarul =====
+  { slug: "articole-ocazie", nume: "Articole ocazie", descriere: "", grup: "ocazie" },
+  { slug: "articole-barbati", nume: "Articole bărbați", descriere: "", grup: "barbati" },
+];
+
+// Hainele de proba, mutate pe categoriile adevarate. Se sterg cand intra marfa reala.
 export const produse: Produs[] = [
   { slug: "tricou-bumbac-alb", nume: "Tricou bumbac alb", categorie: "tricouri", pret: 15, marime: "L", stare: "ca nou" },
   { slug: "tricou-dungi-bleumarin", nume: "Tricou cu dungi bleumarin", categorie: "tricouri", pret: 18, marime: "M", stare: "foarte buna" },
-  { slug: "bluza-maneca-lunga-gri", nume: "Bluză mânecă lungă gri", categorie: "tricouri", pret: 22, marime: "XL", stare: "buna" },
-  { slug: "camasa-in-bej", nume: "Cămașă in bej", categorie: "camasi", pret: 35, marime: "L", stare: "ca nou", marca: "Zara", vandut: true },
-  { slug: "camasa-carouri-rosu", nume: "Cămașă în carouri roșu", categorie: "camasi", pret: 28, marime: "XL", stare: "foarte buna" },
+  { slug: "bluza-maneca-lunga-gri", nume: "Bluză mânecă lungă gri", categorie: "bluze-maneca-lunga", pret: 22, marime: "XL", stare: "buna" },
+  { slug: "camasa-in-bej", nume: "Cămașă in bej", categorie: "camasi-in", pret: 35, marime: "L", stare: "ca nou", marca: "Zara", vandut: true },
+  { slug: "camasa-carouri-rosu", nume: "Cămașă în carouri roșu", categorie: "camasi-maneca-lunga", pret: 28, marime: "XL", stare: "foarte buna" },
   { slug: "blugi-drepti-albastri", nume: "Blugi drepți albaștri", categorie: "blugi", pret: 55, marime: "34", stare: "foarte buna", marca: "Levi's" },
   { slug: "blugi-negri-slim", nume: "Blugi negri slim", categorie: "blugi", pret: 40, marime: "32", stare: "buna", vandut: true },
-  { slug: "pantaloni-stofa-gri", nume: "Pantaloni stofă gri", categorie: "blugi", pret: 45, marime: "36", stare: "ca nou" },
-  { slug: "geaca-fas-neagra", nume: "Geacă fâș neagră", categorie: "geci", pret: 70, marime: "L", stare: "foarte buna" },
-  { slug: "palton-lana-camel", nume: "Palton lână camel", categorie: "geci", pret: 120, marime: "M", stare: "ca nou" },
-  { slug: "pulover-lana-bleu", nume: "Pulover lână bleu", categorie: "tricotaje", pret: 38, marime: "M", stare: "foarte buna" },
-  { slug: "cardigan-tricotat-crem", nume: "Cardigan tricotat crem", categorie: "tricotaje", pret: 42, marime: "L", stare: "buna" },
-  { slug: "hanorac-copii-verde", nume: "Hanorac copii verde", categorie: "copii", pret: 25, marime: "8 ani", stare: "ca nou" },
-  { slug: "rochita-copii-flori", nume: "Rochiță copii cu flori", categorie: "copii", pret: 20, marime: "6 ani", stare: "foarte buna" },
+  { slug: "pantaloni-stofa-gri", nume: "Pantaloni stofă gri", categorie: "pantaloni-fashion", pret: 45, marime: "36", stare: "ca nou" },
+  { slug: "geaca-fas-neagra", nume: "Geacă fâș neagră", categorie: "geci-subtiri", pret: 70, marime: "L", stare: "foarte buna" },
+  { slug: "palton-lana-camel", nume: "Palton lână camel", categorie: "paltoane", pret: 120, marime: "M", stare: "ca nou" },
+  { slug: "pulover-lana-bleu", nume: "Pulover lână bleu", categorie: "pulovere-subtiri", pret: 38, marime: "M", stare: "foarte buna" },
+  { slug: "cardigan-tricotat-crem", nume: "Cardigan tricotat crem", categorie: "pulovere-groase", pret: 42, marime: "L", stare: "buna" },
+  { slug: "rochie-vara-flori", nume: "Rochie de vară cu flori", categorie: "rochii", pret: 45, marime: "M", stare: "ca nou" },
+  { slug: "esarfa-lana-gri", nume: "Eșarfă lână gri", categorie: "esarfe", pret: 20, marime: "unică", stare: "foarte buna" },
 ];
 
 export function getCategorie(slug: string) {
   return categorii.find((c) => c.slug === slug);
 }
 
+export function getGrup(slug: string) {
+  return grupuri.find((g) => g.slug === slug);
+}
+
+/** Categoriile mari dintr-un grup (fara subcategorii), in ordinea din lista. */
+export function categoriiDinGrup(slugGrup: string): Categorie[] {
+  return categorii.filter((c) => c.grup === slugGrup && !c.parinte);
+}
+
+/** Subcategoriile unei categorii mari. Lista goala daca n-are. */
+export function subcategorii(slugCategorie: string): Categorie[] {
+  return categorii.filter((c) => c.parinte === slugCategorie);
+}
+
+/** Categoria si toate subcategoriile ei — dupa astea se cauta hainele. */
+function slugurileCuTot(slugCategorie: string): string[] {
+  return [slugCategorie, ...subcategorii(slugCategorie).map((c) => c.slug)];
+}
+
+/** Cate haine de vanzare are un grup, cu tot cu subcategoriile lui. */
+export function cateProduseInGrup(slugGrup: string): number {
+  const ale = new Set(categorii.filter((c) => c.grup === slugGrup).map((c) => c.slug));
+  return produseDeVanzare().filter((p) => ale.has(p.categorie)).length;
+}
+
 export function getProdus(slug: string) {
   return produse.find((p) => p.slug === slug);
 }
 
-/** Hainele dintr-o categorie, fara cele deja vandute. */
+/**
+ * Hainele dintr-o categorie, fara cele deja vandute.
+ * La o categorie mare (Geci) intra si hainele din subcategoriile ei (Geci ski).
+ */
 export function produseDinCategorie(slug: string) {
-  return produse.filter((p) => p.categorie === slug && !p.vandut);
+  const ale = new Set(slugurileCuTot(slug));
+  return produse.filter((p) => ale.has(p.categorie) && !p.vandut);
 }
 
 export function produseDeVanzare() {

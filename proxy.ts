@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import { COOKIE_ADMIN, citesteBilet } from "@/lib/bilet";
 
 // Mentenanta: cat timp MENTENANTA=1, vizitatorii vad o pagina "revenim in curand".
 // Cine are cheia (CHEIE_ACCES) intra normal: adauga ?cheie=... o data si ramane cu un cookie.
@@ -56,6 +57,12 @@ export function proxy(request: NextRequest) {
   }
 
   if (process.env.MENTENANTA !== "1") return NextResponse.next();
+
+  // Cine e conectat ca admin vede tot site-ul, nu doar administrarea. Altfel, din
+  // aplicatia de pe telefon nu s-ar putea verifica magazinul cat timp e in mentenanta.
+  if (citesteBilet(request.cookies.get(COOKIE_ADMIN)?.value)) {
+    return NextResponse.next();
+  }
 
   const cheie = process.env.CHEIE_ACCES;
 
