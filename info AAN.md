@@ -321,8 +321,37 @@ Verificat pe site-ul adevărat: `/admin` trimite la intrare, formularul răspund
 a rămas în mentenanță. Ca să poată intra cineva trebuie și puse
 setările pe Vercel (`ADMIN_1_EMAIL`, `ADMIN_1_PAROLA_HASH`, `ADMIN_2_EMAIL`,
 `ADMIN_2_PAROLA_HASH`, `SESIUNE_SECRET`) — fără ele, nimeni nu poate intra.
-Dat înapoi cu `git revert <hash>` după publicare.
 
 **Ce NU merge încă:** adăugarea, ștergerea și modificarea hainelor. Hainele sunt scrise în
 cod (`lib/shop.ts`), iar pe Vercel codul nu se poate rescrie singur. Pentru asta trebuie
 baza de date — vezi punctul 1 din lista de la sfârșit.
+
+---
+
+## 22 august 2026 — administrarea ca aplicație pe telefon și PC
+
+Cerință: „o aplicație pe telefon și pc cu care să intru pe site ca administrator".
+
+Făcută fără magazin de aplicații și fără program separat de instalat: pagina de
+administrare se poate adăuga pe ecran ca aplicație, cu iconiță proprie. Se deschide fără
+bara de adrese, arată și pornește ca o aplicație obișnuită, iar contul rămâne ținut minte
+o săptămână. Merge la fel pe Android, pe iPhone și pe Windows.
+
+Fișiere noi: `app/admin/layout.tsx` (fișa aplicației),
+`app/admin/manifest.webmanifest/route.ts`, `app/admin/sw.js/route.ts`,
+`components/aplicatie.tsx`, plus iconițele din `public/admin/` — un „A" portocaliu pe
+fundal închis, desenate din cod, nu luate de undeva.
+
+Aplicația pornește direct pe `/admin` și e limitată la administrare: din ea nu se ajunge
+în magazin din greșeală. Tot ce ține de administrare rămâne cu `noindex`.
+
+Două lucruri de știut:
+
+- **Instalarea merge doar de pe adresa adevărată** (`https://www.aan-sh.ro/admin`), nu de
+  pe calculatorul de lucru — telefonul nu poate instala ceva de pe `localhost`.
+- Partea care se numește „service worker" n-a putut fi verificată în browserul de test
+  folosit la dezvoltare, fiindcă acela nu permite așa ceva deloc. Fișierul se descarcă
+  corect (verificat), iar dacă undeva nu merge, administrarea funcționează la fel, doar
+  fără iconița de aplicație. Se vede sigur la prima încercare pe telefon.
+
+**Stare: NEPUBLICAT.**
