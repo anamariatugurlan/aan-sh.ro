@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import { FormularIntrare } from "@/components/formular-intrare";
+import { ButonInstalare } from "@/components/instaleaza";
 import { adminulCurent } from "@/lib/sesiune";
 
 export const metadata = {
@@ -19,6 +20,8 @@ export default async function Page() {
       </p>
 
       <FormularIntrare />
+
+      <ButonInstalare />
 
       <p className="mt-8 text-xs text-sters">
         Dacă ai uitat parola, ea nu se poate afla — se pune una nouă în setările site-ului.
