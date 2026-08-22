@@ -363,3 +363,20 @@ conturile. Codul era sus, conturile nu existau acolo, deci orice parolă era ref
 fel. Se rezolvă din Settings → Environment Variables + Redeploy. Verificat că mesajul de
 eroare vine chiar de acolo, nu din altă parte.
 
+---
+
+## 22 august 2026 — buton de instalare, si ce a ramas de facut manual
+
+Pe pagina de intrare a aparut o cutie „Pune-o ca aplicatie" cu buton de instalare, ca sa
+nu fie nevoie de umblat prin meniurile browserului. Pe iPhone, unde butonul nu se poate
+face automat, scrie pe scurt ce ai de apasat. Daca administrarea e deja deschisa ca
+aplicatie, cutia nu mai apare deloc. Commit `05cdeb5`, PUBLICAT si verificat direct in
+codul livrat de site.
+
+**Ramane un singur lucru, si e in contul proprietarului:** setarile de pe Vercel. Am
+incercat sa le pun eu — nu se poate: extensia Claude nu e conectata in Chrome, iar pe
+calculator nu exista autentificare Vercel CLI. Pasii si valorile sunt in `.env.local` si
+in fisierul trimis in conversatie. Fara ele, pagina de intrare se deschide dar nu intra
+nimeni, si mesajul e „Nu e configurat niciun cont de admin".
+
+Aplicatia se poate instala de pe acum: https://www.aan-sh.ro/admin
