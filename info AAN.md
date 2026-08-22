@@ -394,3 +394,28 @@ Se vedeau in tabul browserului, la salvarea unui favorit si in rezultatele Googl
 chiar conteaza cand se deschide magazinul. Cautat prin tot proiectul: nu mai sunt altele.
 
 **Stare: PUBLICAT** pe 22 august 2026, in commitul `a126f70`.
+
+---
+
+## 22 august 2026 — categoriile adevarate, pe trei niveluri
+
+Proprietarul a trimis lista lui de categorii. Structura veche (6 categorii de proba,
+inclusiv haine de copii) a fost inlocuita cu arborele lui, pe trei niveluri:
+
+    grup (Articole dama)  ->  categorie (Geci)  ->  subcategorie (Geci ski)
+
+Patru grupuri: Articole dama, Accesorii, Articole ocazie, Articole barbati.
+In dama: Bluze, Camasi, Geci, Hanorace, Pantaloni, Pulovere au subcategorii; Blugi,
+Colanti, Fuste, Rochii, Sacouri, Tricouri, Maieuri, Paltoane, Haine munca, Posete,
+Genti sport n-au. Accesorii: 7 categorii simple.
+
+Meniul de sus arata acum cele patru grupuri (44 de categorii n-aveau cum sa incapa).
+Pagina noua `/grup/[slug]` arata categoriile grupului cu subcategoriile sub ele. Pe
+pagina unei categorii mari apar subcategoriile ca butoane rotunde, iar hainele din
+subcategorii se vad si la parinte (o geaca de ski apare si la Geci).
+
+Doua lucruri de lamurit cu proprietarul: subcategoriile pentru Ocazie si Barbati (n-au
+fost trimise), si prescurtarile din lista lui, ghicite de mine: „Pant.tr." = Pantaloni
+trening, „Pant.vant." = Pantaloni vant, „Pant fas" = Pantaloni fas.
+
+**Stare: NEPUBLICAT.**
