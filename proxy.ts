@@ -44,10 +44,20 @@ function paginaMentenanta(): string {
 }
 
 export function proxy(request: NextRequest) {
+  const url = request.nextUrl;
+
+  // Administrarea are parola ei, deci trece si peste mentenanta: clienta trebuie
+  // sa poata intra sa-si pregateasca hainele cat timp magazinul e inca inchis.
+  // Motoarele de cautare nu au ce cauta acolo niciodata.
+  if (url.pathname === "/admin" || url.pathname.startsWith("/admin/")) {
+    const raspuns = NextResponse.next();
+    raspuns.headers.set("x-robots-tag", "noindex, nofollow");
+    return raspuns;
+  }
+
   if (process.env.MENTENANTA !== "1") return NextResponse.next();
 
   const cheie = process.env.CHEIE_ACCES;
-  const url = request.nextUrl;
 
   // cineva a intrat cu ?cheie=... : ii punem cookie si il trimitem pe adresa curata
   const dinLink = url.searchParams.get("cheie");
