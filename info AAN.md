@@ -418,4 +418,22 @@ Doua lucruri de lamurit cu proprietarul: subcategoriile pentru Ocazie si Barbati
 fost trimise), si prescurtarile din lista lui, ghicite de mine: „Pant.tr." = Pantaloni
 trening, „Pant.vant." = Pantaloni vant, „Pant fas" = Pantaloni fas.
 
-**Stare: NEPUBLICAT.**
+**Stare: PUBLICAT** pe 22 august 2026, commit `d7c17e4`.
+
+---
+
+## 22 august 2026 — adminul vede tot site-ul, nu doar administrarea
+
+Proprietarul a semnalat: din aplicatia de pe telefon vedea doar administrarea; cum dadea
+in magazin, primea pagina de mentenanta. Normal — pe telefon n-avea cheia de acces, care
+se pune o singura data pe calculator.
+
+Acum, cine e conectat ca admin trece de mentenanta pe TOT site-ul. Verificarea biletului
+a fost mutata in `lib/bilet.ts` (doar node:crypto, nimic din Next), ca s-o poata folosi
+si `proxy.ts`, paznicul care ruleaza inaintea paginilor.
+
+Verificat pe site-ul adevarat, conectat cu gabipopecu76@gmail.com:
+acasa, /grup/dama, /categorie/geci, /categorie/pantaloni — toate se deschid.
+Fara cont si fara cheie: mentenanta, ca inainte. Bilet falsificat: mentenanta.
+
+**Stare: PUBLICAT**, commit `d7c17e4` (tot cu categoriile). `git revert d7c17e4`.
