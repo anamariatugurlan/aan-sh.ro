@@ -354,4 +354,12 @@ Două lucruri de știut:
   corect (verificat), iar dacă undeva nu merge, administrarea funcționează la fel, doar
   fără iconița de aplicație. Se vede sigur la prima încercare pe telefon.
 
-**Stare: NEPUBLICAT.**
+**Stare: PUBLICAT** pe 22 august 2026, commit `2a60235`. Dat înapoi cu `git revert 2a60235`.
+Verificat pe site: fișa aplicației, iconițele și fișierul de instalare răspund toate.
+
+**De ce nu mergea parola (22 august, aceeași zi):** pe site apărea „Nu e configurat niciun
+cont de admin". Nu parola era greșită — pe Vercel nu fuseseră puse încă variabilele cu
+conturile. Codul era sus, conturile nu existau acolo, deci orice parolă era refuzată la
+fel. Se rezolvă din Settings → Environment Variables + Redeploy. Verificat că mesajul de
+eroare vine chiar de acolo, nu din altă parte.
+
