@@ -393,4 +393,4 @@ Literele fusesera scrise gresit in fisier (codificate de doua ori).
 Se vedeau in tabul browserului, la salvarea unui favorit si in rezultatele Google, deci
 chiar conteaza cand se deschide magazinul. Cautat prin tot proiectul: nu mai sunt altele.
 
-**Stare: NEPUBLICAT.**
+**Stare: PUBLICAT** pe 22 august 2026, in commitul `a126f70`.
