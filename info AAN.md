@@ -380,3 +380,17 @@ in fisierul trimis in conversatie. Fara ele, pagina de intrare se deschide dar n
 nimeni, si mesajul e „Nu e configurat niciun cont de admin".
 
 Aplicatia se poate instala de pe acum: https://www.aan-sh.ro/admin
+
+---
+
+## 22 august 2026 — litere romanesti stricate in titluri
+
+In tabul browserului scria „bucatA cu bucatA" cu litere corupte, in loc de „bucata cu
+bucata". Erau doua locuri, amandoua vechi, nu din munca de azi: titlul general din
+`app/layout.tsx` si descrierea paginilor de categorie din `app/categorie/[slug]/page.tsx`.
+Literele fusesera scrise gresit in fisier (codificate de doua ori).
+
+Se vedeau in tabul browserului, la salvarea unui favorit si in rezultatele Google, deci
+chiar conteaza cand se deschide magazinul. Cautat prin tot proiectul: nu mai sunt altele.
+
+**Stare: NEPUBLICAT.**
