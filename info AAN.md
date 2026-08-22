@@ -273,3 +273,54 @@ Ce a rămas de făcut, în ordinea importanței:
 3. datele reale: logo, poze, categorii, prețuri;
 4. paginile obligatorii prin lege: termeni, retur, date firmă, ANPC;
 5. tema închisă, rămasă pe jumătate.
+
+---
+
+## 22 august 2026 — cont de administrare și intrare cu parolă
+
+Până acum site-ul n-avea niciun fel de cont: singura încuietoare era cheia de mentenanță,
+aceeași pentru toată lumea. Acum are administrare adevărată, cu e-mail și parolă.
+
+**Cine poate intra** — două conturi, amândouă cu parolă aleasă de proprietar:
+
+    anamariatugurlan1@gmail.com
+    little.demo.uk@gmail.com
+
+**Cum se intră:** adresa `/admin` (local: `http://localhost:3100/admin`). Nu există niciun
+link către ea nicăieri pe site — nici în meniu, nici în subsol. Se ajunge doar scriind
+adresa. Motoarele de căutare primesc `noindex, nofollow` pe toate paginile de administrare.
+Administrarea trece și peste mentenanță: se poate lucra la magazin cât timp e încă închis.
+
+**Parolele nu se țin nicăieri în clar.** În setări stă doar „amprenta" lor (scrypt), din
+care parola nu se poate reface. Amprentele se fac cu:
+
+    node scripts/parola.mjs anamariatugurlan1@gmail.com 1
+
+Scriptul cere parola fără s-o arate pe ecran și scrie liniile de pus în setări.
+Parola uitată nu se poate afla — se pune alta, rulând scriptul din nou.
+
+**O capcană găsită la testare:** amprenta era scrisă întâi cu `$` între bucăți
+(`scrypt$16384$...`). În fișierele de setări `$` înseamnă „variabilă", așa că valoarea se
+tăia la primul `$` și rămânea doar `scrypt` — parola bună era refuzată. S-a trecut pe două
+puncte: `scrypt:16384:...`.
+
+**Apărare împotriva ghicitului:** după 8 încercări greșite de la aceeași adresă, se așteaptă
+15 minute. Sesiunea ține o săptămână, într-un cookie semnat (`SESIUNE_SECRET`) pe care
+browserul nu-l poate citi și nimeni nu-l poate fabrica.
+
+Fișiere noi: `lib/parola.ts`, `lib/sesiune.ts`, `lib/admin-cont.ts`, `app/admin/`,
+`components/formular-intrare.tsx`, `scripts/parola.mjs`. Modificat: `proxy.ts` (lasă
+`/admin` să treacă de mentenanță), `.env.example`, `.gitignore` (ca `.env.example` să
+ajungă și pe GitHub, altfel instrucțiunile se pierdeau).
+
+Conturile se citesc dintr-un singur loc, `lib/admin-cont.ts`. Când trecem pe Supabase se
+schimbă doar fișierul ăla; paginile și sesiunea rămân neatinse.
+
+**Stare: NEPUBLICAT.** Merge doar pe calculator. Ca să ajungă live trebuie și puse
+setările pe Vercel (`ADMIN_1_EMAIL`, `ADMIN_1_PAROLA_HASH`, `ADMIN_2_EMAIL`,
+`ADMIN_2_PAROLA_HASH`, `SESIUNE_SECRET`) — fără ele, nimeni nu poate intra.
+Dat înapoi cu `git revert <hash>` după publicare.
+
+**Ce NU merge încă:** adăugarea, ștergerea și modificarea hainelor. Hainele sunt scrise în
+cod (`lib/shop.ts`), iar pe Vercel codul nu se poate rescrie singur. Pentru asta trebuie
+baza de date — vezi punctul 1 din lista de la sfârșit.
