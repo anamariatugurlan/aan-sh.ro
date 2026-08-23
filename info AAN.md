@@ -471,3 +471,46 @@ trimis „Project URL" si cheia „anon public" din Settings -> API.
 **Stare: PUBLICAT**, commit `49fa0e6`. `git revert 49fa0e6`.
 Ce ramane dupa ce vin cheile: formularul de adaugare cu poze, editarea, stergerea,
 marcarea ca vandut, si mutarea intrarii in administrare pe conturile din Supabase.
+
+---
+
+## 22 august 2026 — baza de date, si adminul isi pune singur hainele
+
+Ziua cea mare: magazinul nu mai are haine scrise in cod. Proprietarul a facut proiectul
+Supabase (AAN SH, regiunea West EU / Irlanda), a rulat `baza-de-date.sql` si a adaugat
+conturile. De aici incolo, tot ce tine de haine se face de pe site.
+
+**Ce poate face adminul acum, direct din administrare:** adauga o haina, ii pune poze
+(facute pe loc de pe telefon), pret, marime, stare, marca si amanunte; alege unde intra
+— grup, categorie, subcategorie; modifica orice mai tarziu; o marcheaza vanduta; sau o
+sterge de tot.
+
+**Cum sunt aparate datele.** Cele doua chei (adresa proiectului si cheia „publishable")
+stau in `lib/supabase-config.ts`, la vedere. Nu e o scapare: cheia aia e facuta ca sa
+stea in site si ajunge oricum in paginile trimise catre browser. Ce apara datele sunt
+regulile din baza de date (RLS): oricine poate CITI hainele, dar poate SCRIE doar cine
+e conectat cu un cont. Verificat: o scriere fara cont e respinsa.
+
+**Conturile au trecut pe Supabase.** Intrarea nu mai foloseste lista de parole din cod.
+Fisierele `admin-conturi-temporare.ts`, `parola.ts`, `bilet.ts`, `sesiune.ts`,
+`admin-cont.ts` si `scripts/parola.mjs` au fost sterse — nu mai exista nicio parola in
+depozit. Compromisul de dimineata s-a inchis singur.
+
+**Paginile magazinului** (acasa, grup, categorie, produs, cautare, cos) citesc toate din
+baza de date. `lib/shop.ts` a ramas doar cu categoriile; functiile primesc lista ca prim
+argument, ca sa nu depinda de unde vine.
+
+Verificat local, cap-coada: intrare cu contul din Supabase, adaugata o haina la „Geci
+ski", aparuta imediat in magazin cu drumul corect deasupra, apoi stearsa.
+
+**O incurcatura de rezolvat:** adresa reala a proprietarului e
+`gabipopescu76.gp@gmail.com`, dar in Supabase e trecuta `gabipopecu76@gmail.com` (fara
+„s", fara „.gp") — asa mi-a fost data la inceput. Se rezolva din Authentication ->
+Users: adaugat contul corect, sters cel gresit. Eu nu pot face asta si nici nu trebuie:
+n-am drepturi de administrator in Supabase, si asa e bine.
+
+**Stare: PUBLICAT**, commit `6fe6fe1`. `git revert 6fe6fe1`.
+
+Ce ramane: subcategoriile pentru Ocazie si Barbati; comenzile sa ajunga undeva (acum se
+pierd); paginile obligatorii prin lege; datele firmei; si deschiderea magazinului, cand
+e marfa in el.
