@@ -3,15 +3,11 @@ import { notFound } from "next/navigation";
 import {
   categoriiDinGrup,
   getGrup,
-  grupuri,
   pretMinimCategorie,
   produseDinCategorie,
   subcategorii,
 } from "@/lib/shop";
-
-export function generateStaticParams() {
-  return grupuri.map((g) => ({ slug: g.slug }));
-}
+import { toateProdusele } from "@/lib/depozit";
 
 export async function generateMetadata(props: PageProps<"/grup/[slug]">) {
   const { slug } = await props.params;
@@ -26,6 +22,7 @@ export default async function Page(props: PageProps<"/grup/[slug]">) {
   if (!grup) notFound();
 
   const mari = categoriiDinGrup(grup.slug);
+  const dinMagazin = await toateProdusele();
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-8">
@@ -41,8 +38,8 @@ export default async function Page(props: PageProps<"/grup/[slug]">) {
       <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {mari.map((c) => {
           const copii = subcategorii(c.slug);
-          const minim = pretMinimCategorie(c.slug);
-          const cate = produseDinCategorie(c.slug).length;
+          const minim = pretMinimCategorie(dinMagazin, c.slug);
+          const cate = produseDinCategorie(dinMagazin, c.slug).length;
 
           return (
             <div

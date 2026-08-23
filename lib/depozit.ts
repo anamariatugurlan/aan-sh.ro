@@ -1,51 +1,26 @@
 // Depozitul: de unde vin hainele si unde se salveaza cand adminul le adauga.
 //
-// Cat timp Supabase nu e legat, site-ul merge mai departe cu hainele de proba din
-// `lib/shop.ts` — doar ca nu se poate adauga nimic. De indata ce apar cele doua chei,
-// totul trece pe baza de date, fara sa se schimbe nicio pagina.
-//
-// Cele doua chei NU sunt secrete: cheia "anon" e facuta ca sa stea la vedere in site.
-// Ce apara datele sunt regulile din baza de date (RLS): scrie doar cine e conectat.
+// Totul trece prin legatura de pe server, care duce cu ea si contul conectat. Asa,
+// baza de date stie cine scrie: un vizitator poate doar citi, un admin poate si scrie.
+// Regulile sunt acolo, nu aici — vezi baza-de-date.sql.
 
-import { createClient, type SupabaseClient } from "@supabase/supabase-js";
-import { produse as produseDeProba, type Produs } from "./shop";
-
-const URL_SUPABASE = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "";
-const CHEIE_SUPABASE = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? "";
+import { dinServer } from "./supabase";
+import type { Produs } from "./shop";
 
 export const TABEL = "produse";
 export const GALERIE = "poze";
 
-/** E legata baza de date? Daca nu, site-ul merge pe hainele de proba. */
-export function depozitulELegat(): boolean {
-  return Boolean(URL_SUPABASE && CHEIE_SUPABASE);
-}
-
-let clientul: SupabaseClient | null = null;
-
-export function client(): SupabaseClient {
-  if (!depozitulELegat()) {
-    throw new Error(
-      "Baza de date nu e legata. Lipsesc NEXT_PUBLIC_SUPABASE_URL si " +
-        "NEXT_PUBLIC_SUPABASE_ANON_KEY. Vezi baza-de-date.sql.",
-    );
-  }
-  if (!clientul) clientul = createClient(URL_SUPABASE, CHEIE_SUPABASE);
-  return clientul;
-}
-
-/** Cum arata o haina in baza de date. Aceleasi campuri ca `Produs`, plus pozele. */
+/** Cum arata o haina in baza de date: ca `Produs`, plus pozele si descrierea. */
 export type ProdusSalvat = Produs & {
   id?: string;
   poze?: string[];
-  descriere?: string;
+  descriere?: string | null;
+  creat_la?: string;
 };
 
-/** Toate hainele. Fara baza de date, cele de proba. */
 export async function toateProdusele(): Promise<ProdusSalvat[]> {
-  if (!depozitulELegat()) return produseDeProba;
-
-  const { data, error } = await client()
+  const db = await dinServer();
+  const { data, error } = await db
     .from(TABEL)
     .select("*")
     .order("creat_la", { ascending: false });
@@ -54,30 +29,48 @@ export async function toateProdusele(): Promise<ProdusSalvat[]> {
   return (data ?? []) as ProdusSalvat[];
 }
 
-export async function produsDupaSlug(slug: string): Promise<ProdusSalvat | null> {
-  if (!depozitulELegat()) return produseDeProba.find((p) => p.slug === slug) ?? null;
+export async function produseDeVanzare(): Promise<ProdusSalvat[]> {
+  return (await toateProdusele()).filter((p) => !p.vandut);
+}
 
-  const { data, error } = await client().from(TABEL).select("*").eq("slug", slug).maybeSingle();
+export async function produsDupaSlug(slug: string): Promise<ProdusSalvat | null> {
+  const db = await dinServer();
+  const { data, error } = await db.from(TABEL).select("*").eq("slug", slug).maybeSingle();
   if (error) throw new Error("Nu am putut citi haina: " + error.message);
   return (data as ProdusSalvat) ?? null;
 }
 
 export async function adaugaProdus(p: ProdusSalvat): Promise<void> {
-  const { error } = await client().from(TABEL).insert(p);
-  if (error) throw new Error("Nu am putut adauga haina: " + error.message);
+  const db = await dinServer();
+  const { error } = await db.from(TABEL).insert(p);
+  if (error) throw new Error(traduEroarea(error.message));
 }
 
 export async function modificaProdus(slug: string, p: Partial<ProdusSalvat>): Promise<void> {
-  const { error } = await client().from(TABEL).update(p).eq("slug", slug);
-  if (error) throw new Error("Nu am putut modifica haina: " + error.message);
+  const db = await dinServer();
+  const { error } = await db.from(TABEL).update(p).eq("slug", slug);
+  if (error) throw new Error(traduEroarea(error.message));
 }
 
 export async function stergeProdus(slug: string): Promise<void> {
-  const { error } = await client().from(TABEL).delete().eq("slug", slug);
-  if (error) throw new Error("Nu am putut sterge haina: " + error.message);
+  const db = await dinServer();
+  const { error } = await db.from(TABEL).delete().eq("slug", slug);
+  if (error) throw new Error(traduEroarea(error.message));
 }
 
-/** Face un slug din numele hainei: "Rochie de vară" -> "rochie-de-vara". */
+/** Mesajele bazei de date sunt in engleza; le facem pe intelesul omului. */
+function traduEroarea(mesaj: string): string {
+  const m = mesaj.toLowerCase();
+  if (m.includes("duplicate key") || m.includes("unique")) {
+    return "Mai există o haină cu același nume. Schimbă puțin numele.";
+  }
+  if (m.includes("row-level security") || m.includes("permission")) {
+    return "Nu ai voie să faci asta. Ieși și intră din nou în cont.";
+  }
+  return "Nu a mers: " + mesaj;
+}
+
+/** Face un nume scurt pentru adresa hainei: "Rochie de vară" -> "rochie-de-vara". */
 export function slugDinNume(nume: string): string {
   return nume
     .toLowerCase()

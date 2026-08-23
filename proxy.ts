@@ -1,6 +1,14 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { COOKIE_ADMIN, citesteBilet } from "@/lib/bilet";
+// Semnul ca cineva e conectat: cookie-ul lasat de Supabase. Aici doar ne uitam daca
+// exista, fara sa intrebam serverul — altfel fiecare pagina ar astepta un raspuns de
+// pe internet. Paza adevarata e in `app/admin/(panou)/layout.tsx`, pe server.
+// Mentenanta nu e o incuietoare, ci o pagina „revenim in curand", deci atat ajunge.
+function pareConectat(request: NextRequest): boolean {
+  return request.cookies
+    .getAll()
+    .some((c) => c.name.startsWith("sb-") && c.name.includes("auth-token"));
+}
 
 // Mentenanta: cat timp MENTENANTA=1, vizitatorii vad o pagina "revenim in curand".
 // Cine are cheia (CHEIE_ACCES) intra normal: adauga ?cheie=... o data si ramane cu un cookie.
@@ -60,7 +68,7 @@ export function proxy(request: NextRequest) {
 
   // Cine e conectat ca admin vede tot site-ul, nu doar administrarea. Altfel, din
   // aplicatia de pe telefon nu s-ar putea verifica magazinul cat timp e in mentenanta.
-  if (citesteBilet(request.cookies.get(COOKIE_ADMIN)?.value)) {
+  if (pareConectat(request)) {
     return NextResponse.next();
   }
 

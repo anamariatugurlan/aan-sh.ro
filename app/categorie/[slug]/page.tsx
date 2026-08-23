@@ -13,6 +13,7 @@ import {
   subcategorii,
   type Sortare,
 } from "@/lib/shop";
+import { toateProdusele } from "@/lib/depozit";
 
 export function generateStaticParams() {
   return categorii.map((c) => ({ slug: c.slug }));
@@ -41,8 +42,9 @@ export default async function Page(props: PageProps<"/categorie/[slug]">) {
   const marimeCeruta = typeof cautari.marime === "string" ? cautari.marime : null;
   const sortare = (typeof cautari.sort === "string" ? cautari.sort : "noi") as Sortare;
 
-  const toate = produseDinCategorie(slug);
-  const marimi = marimiDinCategorie(slug);
+  const dinMagazin = await toateProdusele();
+  const toate = produseDinCategorie(dinMagazin, slug);
+  const marimi = marimiDinCategorie(dinMagazin, slug);
   const filtrate = marimeCeruta ? toate.filter((p) => p.marime === marimeCeruta) : toate;
   const lista = sorteaza(filtrate, sortare);
 

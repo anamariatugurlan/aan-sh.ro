@@ -6,10 +6,11 @@ import {
   categoriiDinGrup,
   formatLei,
   grupuri,
-  produseDeVanzare,
 } from "@/lib/shop";
+import { produseDeVanzare } from "@/lib/depozit";
 
-export default function Page() {
+export default async function Page() {
+  const dinMagazin = await produseDeVanzare();
   return (
     <>
       <section className="border-b border-linie bg-suprafata">
@@ -52,7 +53,7 @@ export default function Page() {
         <div className="mt-6 grid gap-4 sm:grid-cols-2">
           {grupuri.map((g) => {
             const mari = categoriiDinGrup(g.slug);
-            const cate = cateProduseInGrup(g.slug);
+            const cate = cateProduseInGrup(dinMagazin, g.slug);
             return (
               <Link
                 key={g.slug}
@@ -85,7 +86,7 @@ export default function Page() {
       <section className="mx-auto max-w-6xl px-4 pb-12">
         <h2 className="text-2xl font-bold tracking-tight text-principal">Adăugate recent</h2>
         <div className="mt-6 grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
-          {produseDeVanzare().slice(0, 8).map((p) => (
+          {dinMagazin.slice(0, 8).map((p) => (
             <CardProdus key={p.slug} p={p} />
           ))}
         </div>

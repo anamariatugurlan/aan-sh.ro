@@ -1,5 +1,7 @@
-// Datele magazinului. Deocamdata scrise aici, ca sa mearga site-ul fara baza de date.
-// Cand trecem pe Supabase, se schimba doar functiile de mai jos, nu si paginile.
+// Categoriile magazinului si ajutoarele care lucreaza cu hainele.
+//
+// Hainele NU mai stau aici: vin din baza de date (vezi lib/depozit.ts). Functiile de
+// mai jos primesc lista ca prim argument, ca sa nu depinda de unde vine.
 
 /** Grupurile mari din meniu: Damă, Accesorii, Ocazie, Bărbați. */
 export type Grup = {
@@ -29,8 +31,10 @@ export type Produs = {
   pret: number;      // lei, pretul bucatii
   marime: string;
   stare: "ca nou" | "foarte buna" | "buna";
-  marca?: string;
+  marca?: string | null;
   vandut?: boolean;
+  poze?: string[] | null;
+  descriere?: string | null;
 };
 
 export const grupuri: Grup[] = [
@@ -105,24 +109,6 @@ export const categorii: Categorie[] = [
   { slug: "articole-barbati", nume: "Articole bărbați", descriere: "", grup: "barbati" },
 ];
 
-// Hainele de proba, mutate pe categoriile adevarate. Se sterg cand intra marfa reala.
-export const produse: Produs[] = [
-  { slug: "tricou-bumbac-alb", nume: "Tricou bumbac alb", categorie: "tricouri", pret: 15, marime: "L", stare: "ca nou" },
-  { slug: "tricou-dungi-bleumarin", nume: "Tricou cu dungi bleumarin", categorie: "tricouri", pret: 18, marime: "M", stare: "foarte buna" },
-  { slug: "bluza-maneca-lunga-gri", nume: "Bluză mânecă lungă gri", categorie: "bluze-maneca-lunga", pret: 22, marime: "XL", stare: "buna" },
-  { slug: "camasa-in-bej", nume: "Cămașă in bej", categorie: "camasi-in", pret: 35, marime: "L", stare: "ca nou", marca: "Zara", vandut: true },
-  { slug: "camasa-carouri-rosu", nume: "Cămașă în carouri roșu", categorie: "camasi-maneca-lunga", pret: 28, marime: "XL", stare: "foarte buna" },
-  { slug: "blugi-drepti-albastri", nume: "Blugi drepți albaștri", categorie: "blugi", pret: 55, marime: "34", stare: "foarte buna", marca: "Levi's" },
-  { slug: "blugi-negri-slim", nume: "Blugi negri slim", categorie: "blugi", pret: 40, marime: "32", stare: "buna", vandut: true },
-  { slug: "pantaloni-stofa-gri", nume: "Pantaloni stofă gri", categorie: "pantaloni-fashion", pret: 45, marime: "36", stare: "ca nou" },
-  { slug: "geaca-fas-neagra", nume: "Geacă fâș neagră", categorie: "geci-subtiri", pret: 70, marime: "L", stare: "foarte buna" },
-  { slug: "palton-lana-camel", nume: "Palton lână camel", categorie: "paltoane", pret: 120, marime: "M", stare: "ca nou" },
-  { slug: "pulover-lana-bleu", nume: "Pulover lână bleu", categorie: "pulovere-subtiri", pret: 38, marime: "M", stare: "foarte buna" },
-  { slug: "cardigan-tricotat-crem", nume: "Cardigan tricotat crem", categorie: "pulovere-groase", pret: 42, marime: "L", stare: "buna" },
-  { slug: "rochie-vara-flori", nume: "Rochie de vară cu flori", categorie: "rochii", pret: 45, marime: "M", stare: "ca nou" },
-  { slug: "esarfa-lana-gri", nume: "Eșarfă lână gri", categorie: "esarfe", pret: 20, marime: "unică", stare: "foarte buna" },
-];
-
 export function getCategorie(slug: string) {
   return categorii.find((c) => c.slug === slug);
 }
@@ -147,38 +133,31 @@ function slugurileCuTot(slugCategorie: string): string[] {
 }
 
 /** Cate haine de vanzare are un grup, cu tot cu subcategoriile lui. */
-export function cateProduseInGrup(slugGrup: string): number {
+export function cateProduseInGrup(lista: Produs[], slugGrup: string): number {
   const ale = new Set(categorii.filter((c) => c.grup === slugGrup).map((c) => c.slug));
-  return produseDeVanzare().filter((p) => ale.has(p.categorie)).length;
-}
-
-export function getProdus(slug: string) {
-  return produse.find((p) => p.slug === slug);
+  return lista.filter((p) => !p.vandut && ale.has(p.categorie)).length;
 }
 
 /**
  * Hainele dintr-o categorie, fara cele deja vandute.
  * La o categorie mare (Geci) intra si hainele din subcategoriile ei (Geci ski).
+ * Lista vine din baza de date — vezi lib/depozit.ts.
  */
-export function produseDinCategorie(slug: string) {
+export function produseDinCategorie<T extends Produs>(lista: T[], slug: string): T[] {
   const ale = new Set(slugurileCuTot(slug));
-  return produse.filter((p) => ale.has(p.categorie) && !p.vandut);
-}
-
-export function produseDeVanzare() {
-  return produse.filter((p) => !p.vandut);
+  return lista.filter((p) => ale.has(p.categorie) && !p.vandut);
 }
 
 /** Cel mai mic pret dintr-o categorie, pentru "de la X lei". */
-export function pretMinimCategorie(slug: string): number | null {
-  const lista = produseDinCategorie(slug);
-  if (lista.length === 0) return null;
-  return Math.min(...lista.map((p) => p.pret));
+export function pretMinimCategorie(lista: Produs[], slug: string): number | null {
+  const ale = produseDinCategorie(lista, slug);
+  if (ale.length === 0) return null;
+  return Math.min(...ale.map((p) => p.pret));
 }
 
 /** Marimile care chiar exista intr-o categorie, ca sa nu aratam filtre goale. */
-export function marimiDinCategorie(slug: string): string[] {
-  const set = new Set(produseDinCategorie(slug).map((p) => p.marime));
+export function marimiDinCategorie(lista: Produs[], slug: string): string[] {
+  const set = new Set(produseDinCategorie(lista, slug).map((p) => p.marime));
   return [...set].sort(comparaMarimi);
 }
 
@@ -204,11 +183,11 @@ function normalizeaza(s: string): string {
     .trim();
 }
 
-export function cautaProduse(intrebare: string): Produs[] {
+export function cautaProduse<T extends Produs>(lista: T[], intrebare: string): T[] {
   const q = normalizeaza(intrebare);
   if (!q) return [];
   const cuvinte = q.split(/\s+/);
-  return produseDeVanzare().filter((p) => {
+  return lista.filter((p) => !p.vandut).filter((p) => {
     const cat = getCategorie(p.categorie);
     const text = normalizeaza([p.nume, p.marca ?? "", p.marime, cat?.nume ?? ""].join(" "));
     return cuvinte.every((cuv) => text.includes(cuv));

@@ -1,15 +1,52 @@
 "use client";
 
-import { useActionState } from "react";
-import { intra, type StareIntrare } from "@/app/admin/actiuni";
-
-const gol: StareIntrare = {};
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { dinBrowser } from "@/lib/supabase-browser";
 
 export function FormularIntrare() {
-  const [stare, actiune, inAsteptare] = useActionState(intra, gol);
+  const router = useRouter();
+  const [eroare, setEroare] = useState<string | null>(null);
+  const [inAsteptare, setInAsteptare] = useState(false);
+
+  async function intra(date: FormData) {
+    setEroare(null);
+    setInAsteptare(true);
+
+    const email = String(date.get("email") ?? "").trim();
+    const parola = String(date.get("parola") ?? "");
+
+    if (!email || !parola) {
+      setEroare("Scrie și e-mailul, și parola.");
+      setInAsteptare(false);
+      return;
+    }
+
+    const { error } = await dinBrowser().auth.signInWithPassword({ email, password: parola });
+
+    if (error) {
+      // mesajele Supabase sunt in engleza; le traducem pe cele obisnuite
+      const m = error.message.toLowerCase();
+      setEroare(
+        m.includes("invalid login")
+          ? "E-mailul sau parola nu sunt bune."
+          : m.includes("email not confirmed")
+            ? "Contul nu e confirmat. Bifează „Auto Confirm User” în Supabase."
+            : "Nu am putut intra: " + error.message,
+      );
+      setInAsteptare(false);
+      return;
+    }
+
+    router.replace("/admin");
+    router.refresh();
+  }
+
+  const claseCamp =
+    "mt-1.5 block min-h-12 w-full rounded-lg border border-linie bg-fundal px-3.5 text-base text-principal outline-none focus:border-accent";
 
   return (
-    <form action={actiune} className="mt-6 space-y-4">
+    <form action={intra} className="mt-6 space-y-4">
       <div>
         <label htmlFor="email" className="block text-sm font-medium text-principal">
           E-mail
@@ -23,8 +60,7 @@ export function FormularIntrare() {
           autoCapitalize="none"
           autoCorrect="off"
           required
-          defaultValue={stare.email ?? ""}
-          className="mt-1.5 block min-h-12 w-full rounded-lg border border-linie bg-fundal px-3.5 text-base text-principal outline-none focus:border-accent"
+          className={claseCamp}
         />
       </div>
 
@@ -38,13 +74,13 @@ export function FormularIntrare() {
           type="password"
           autoComplete="current-password"
           required
-          className="mt-1.5 block min-h-12 w-full rounded-lg border border-linie bg-fundal px-3.5 text-base text-principal outline-none focus:border-accent"
+          className={claseCamp}
         />
       </div>
 
-      {stare.eroare && (
+      {eroare && (
         <p role="alert" className="rounded-lg bg-accent-slab px-3.5 py-3 text-sm text-pericol">
-          {stare.eroare}
+          {eroare}
         </p>
       )}
 

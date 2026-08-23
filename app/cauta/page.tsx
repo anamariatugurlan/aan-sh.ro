@@ -2,13 +2,14 @@ import Link from "next/link";
 import { CardProdus } from "@/components/card-produs";
 import { Cautare } from "@/components/cautare";
 import { cautaProduse, categorii } from "@/lib/shop";
+import { toateProdusele } from "@/lib/depozit";
 
 export const metadata = { title: "Caută" };
 
 export default async function Page(props: PageProps<"/cauta">) {
   const cautari = await props.searchParams;
   const q = typeof cautari.q === "string" ? cautari.q : "";
-  const rezultate = q ? cautaProduse(q) : [];
+  const rezultate = q ? cautaProduse(await toateProdusele(), q) : [];
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-8">

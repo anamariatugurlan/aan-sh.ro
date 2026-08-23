@@ -4,10 +4,16 @@ import { useState } from "react";
 import { categorii, grupuri, type Categorie } from "@/lib/shop";
 
 /**
- * Alegerea locului unde intra haina: intai grupul, apoi categoria, apoi — daca
- * are — subcategoria. Ce se trimite mai departe e cea mai adanca alegere facuta.
+ * Alegerea locului unde intra haina: intai grupul, apoi categoria, apoi — daca are —
+ * subcategoria. Haina intra in subcategorie daca s-a ales una, altfel in categoria mare.
  */
-export function AlegeCategoria({ initial }: { initial?: string }) {
+export function AlegeCategoria({
+  initial,
+  laSchimbare,
+}: {
+  initial?: string;
+  laSchimbare: (slug: string) => void;
+}) {
   const initiala = initial ? categorii.find((c) => c.slug === initial) : undefined;
   const parintele = initiala?.parinte
     ? categorii.find((c) => c.slug === initiala.parinte)
@@ -20,16 +26,11 @@ export function AlegeCategoria({ initial }: { initial?: string }) {
   const mari: Categorie[] = categorii.filter((c) => c.grup === grup && !c.parinte);
   const subs: Categorie[] = categorii.filter((c) => c.parinte === mare);
 
-  // haina intra in subcategorie daca s-a ales una, altfel in categoria mare
-  const ales = sub || mare;
-
   const claseSelect =
-    "mt-1.5 block min-h-12 w-full rounded-lg border border-linie bg-fundal px-3 text-base text-principal outline-none focus:border-accent";
+    "mt-1.5 block min-h-12 w-full rounded-lg border border-linie bg-fundal px-3 text-base text-principal outline-none focus:border-accent disabled:opacity-50";
 
   return (
     <div className="grid gap-4 sm:grid-cols-3">
-      <input type="hidden" name="categorie" value={ales} />
-
       <div>
         <label htmlFor="grup" className="block text-sm font-medium text-principal">
           Grup
@@ -41,6 +42,7 @@ export function AlegeCategoria({ initial }: { initial?: string }) {
             setGrup(e.target.value);
             setMare("");
             setSub("");
+            laSchimbare("");
           }}
           className={claseSelect}
         >
@@ -64,8 +66,9 @@ export function AlegeCategoria({ initial }: { initial?: string }) {
           onChange={(e) => {
             setMare(e.target.value);
             setSub("");
+            laSchimbare(e.target.value);
           }}
-          className={`${claseSelect} disabled:opacity-50`}
+          className={claseSelect}
         >
           <option value="">— alege —</option>
           {mari.map((c) => (
@@ -87,8 +90,11 @@ export function AlegeCategoria({ initial }: { initial?: string }) {
           id="subcategorie"
           value={sub}
           disabled={subs.length === 0}
-          onChange={(e) => setSub(e.target.value)}
-          className={`${claseSelect} disabled:opacity-50`}
+          onChange={(e) => {
+            setSub(e.target.value);
+            laSchimbare(e.target.value || mare);
+          }}
+          className={claseSelect}
         >
           <option value="">— toată categoria —</option>
           {subs.map((c) => (

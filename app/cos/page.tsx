@@ -1,26 +1,44 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Poza } from "@/components/poza";
 import { useCos } from "@/components/cos-context";
 import {
   TRANSPORT_GRATUIT_DE_LA,
   costTransport,
   formatLei,
-  getProdus,
+  type Produs,
 } from "@/lib/shop";
+import { dinBrowser } from "@/lib/supabase-browser";
 
 export default function Page() {
   const { articole, scoate, goleste, incarcat } = useCos();
   const [trimisa, setTrimisa] = useState(false);
+  const [dinMagazin, setDinMagazin] = useState<Produs[] | null>(null);
 
-  const produseInCos = articole.map(getProdus).filter((p) => p !== undefined);
+  // hainele din cos se cauta in baza de date, dupa numele lor scurt
+  useEffect(() => {
+    let valabil = true;
+    dinBrowser()
+      .from("produse")
+      .select("*")
+      .then(({ data }) => {
+        if (valabil) setDinMagazin((data ?? []) as Produs[]);
+      });
+    return () => {
+      valabil = false;
+    };
+  }, []);
+
+  const produseInCos = articole
+    .map((slug) => dinMagazin?.find((p) => p.slug === slug))
+    .filter((p): p is Produs => p !== undefined);
   const subtotal = produseInCos.reduce((s, p) => s + p.pret, 0);
   const transport = costTransport(subtotal);
   const total = subtotal + transport;
 
-  if (!incarcat) {
+  if (!incarcat || dinMagazin === null) {
     return <div className="mx-auto max-w-6xl px-4 py-16 text-sters">Se încarcă coșul…</div>;
   }
 

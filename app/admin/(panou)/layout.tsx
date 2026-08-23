@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { adminulCurent } from "@/lib/sesiune";
+import { adminulCurent } from "@/lib/supabase";
 import { iesi } from "../actiuni";
 
 export const metadata = {
@@ -17,7 +17,7 @@ export default async function Layout({ children }: LayoutProps<"/admin">) {
     <div className="mx-auto max-w-6xl px-4 py-8">
       <div className="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-linie bg-suprafata px-4 py-3">
         <div className="text-sm text-secundar">
-          Administrare — conectat ca <span className="font-semibold text-principal">{admin}</span>
+          Administrare — conectat ca <span className="font-semibold text-principal">{admin.email}</span>
         </div>
         <div className="flex items-center gap-3">
           <Link href="/" className="text-sm text-secundar hover:text-accent-text">

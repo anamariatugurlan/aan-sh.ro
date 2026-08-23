@@ -8,18 +8,13 @@ import {
   TRANSPORT_GRATUIT_DE_LA,
   formatLei,
   getCategorie,
-  getProdus,
-  produse,
   produseDinCategorie,
 } from "@/lib/shop";
-
-export function generateStaticParams() {
-  return produse.map((p) => ({ slug: p.slug }));
-}
+import { produsDupaSlug, toateProdusele } from "@/lib/depozit";
 
 export async function generateMetadata(props: PageProps<"/produs/[slug]">) {
   const { slug } = await props.params;
-  const p = getProdus(slug);
+  const p = await produsDupaSlug(slug);
   if (!p) return {};
   return {
     title: p.nume,
@@ -29,11 +24,11 @@ export async function generateMetadata(props: PageProps<"/produs/[slug]">) {
 
 export default async function Page(props: PageProps<"/produs/[slug]">) {
   const { slug } = await props.params;
-  const p = getProdus(slug);
+  const p = await produsDupaSlug(slug);
   if (!p) notFound();
 
   const cat = getCategorie(p.categorie);
-  const altele = produseDinCategorie(p.categorie).filter((x) => x.slug !== p.slug).slice(0, 4);
+  const altele = produseDinCategorie(await toateProdusele(), p.categorie).filter((x) => x.slug !== p.slug).slice(0, 4);
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-8">
