@@ -10,8 +10,14 @@ export default async function Page() {
 
   return (
     <div className="mt-8">
-      <div className="flex flex-wrap items-center justify-between gap-4">
+      <div className="flex flex-wrap items-center justify-between gap-3">
         <h1 className="text-3xl font-bold tracking-tight text-principal">Hainele din magazin</h1>
+        <Link
+          href="/admin/evidenta"
+          className="inline-flex min-h-11 items-center rounded-lg border border-linie px-4 text-sm font-medium text-principal transition hover:border-accent"
+        >
+          Cine ce a făcut
+        </Link>
         <Link
           href="/admin/haina/noua"
           className="inline-flex min-h-11 items-center rounded-lg bg-accent px-5 text-sm font-semibold text-pe-accent transition hover:bg-accent-tare"
