@@ -3,7 +3,6 @@ import { notFound } from "next/navigation";
 import {
   categoriiDinGrup,
   getGrup,
-  pretMinimCategorie,
   produseDinCategorie,
   subcategorii,
 } from "@/lib/shop";
@@ -38,7 +37,6 @@ export default async function Page(props: PageProps<"/grup/[slug]">) {
       <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {mari.map((c) => {
           const copii = subcategorii(c.slug);
-          const minim = pretMinimCategorie(dinMagazin, c.slug);
           const cate = produseDinCategorie(dinMagazin, c.slug).length;
 
           return (
@@ -53,9 +51,10 @@ export default async function Page(props: PageProps<"/grup/[slug]">) {
                 >
                   {c.nume}
                 </Link>
-                {minim !== null && (
-                  <span className="shrink-0 rounded-full bg-accent-slab px-3 py-1 text-sm font-bold text-accent-text">
-                    de la {minim} lei
+                {/* Fara pret pe categorie: fiecare haina e unicat, cu pretul ei. */}
+                {cate > 0 && (
+                  <span className="shrink-0 rounded-full bg-suprafata-slaba px-3 py-1 text-sm font-medium text-secundar">
+                    {cate} {cate === 1 ? "haină" : "haine"}
                   </span>
                 )}
               </div>

@@ -148,13 +148,6 @@ export function produseDinCategorie<T extends Produs>(lista: T[], slug: string):
   return lista.filter((p) => ale.has(p.categorie) && !p.vandut);
 }
 
-/** Cel mai mic pret dintr-o categorie, pentru "de la X lei". */
-export function pretMinimCategorie(lista: Produs[], slug: string): number | null {
-  const ale = produseDinCategorie(lista, slug);
-  if (ale.length === 0) return null;
-  return Math.min(...ale.map((p) => p.pret));
-}
-
 /** Marimile care chiar exista intr-o categorie, ca sa nu aratam filtre goale. */
 export function marimiDinCategorie(lista: Produs[], slug: string): string[] {
   const set = new Set(produseDinCategorie(lista, slug).map((p) => p.marime));
