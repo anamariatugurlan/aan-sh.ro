@@ -528,3 +528,51 @@ Contul `gabipopescu76.gp@gmail.com` a fost creat si verificat: intra. Ramane de 
 cel gresit, `gabipopecu76@gmail.com`.
 
 **Stare: PUBLICAT**, commit `6145e78`. `git revert 6145e78`.
+
+---
+
+## 22 august 2026 — evidenta pe fiecare admin
+
+Cerinta proprietarului: fiecare cont de admin sa fie contorizat — cate haine a pus si
+cate a sters. Cu doi oameni care umbla la acelasi magazin, e o cerinta sanatoasa.
+
+Facut asa incat sa nu poata fi ocolita: caietul il scrie BAZA DE DATE, prin declansatoare
+(triggers), nu site-ul. Adica orice adaugare, schimbare sau stergere de haina se scrie
+automat, indiferent pe ce cale s-a facut. Nimeni nu poate sterge din caiet — nici
+proprietarul din administrare; singura regula pusa pe tabelul `jurnal` e cititul.
+Pe fiecare haina ramane scris si cine a pus-o (`adaugat_de`).
+
+Fisiere: `contorizare.sql` (de rulat o data in Supabase), `lib/jurnal.ts` (socoteala),
+`/admin/evidenta` (tabelul cu puse / schimbate / sterse / ultima data, plus ultimele 25
+de miscari). Daca SQL-ul n-a fost rulat, pagina spune limpede ce lipseste, in loc sa dea
+eroare.
+
+**Se numara de la rulare incolo.** Ce s-a facut inainte n-are cum sa fie stiut: nu exista
+cine sa scrie.
+
+**Stare: PUBLICAT**, commit `2d4d0e5`. `git revert 2d4d0e5`.
+**De facut de proprietar:** rulat `contorizare.sql` in SQL Editor.
+
+---
+
+## Unde am ramas, la sfarsitul zilei de 22 august 2026
+
+**Merge tot:** administrarea cu cont (Supabase Auth, trei-patru conturi), aplicatia
+instalabila pe telefon si PC, adminul vede tot site-ul peste mentenanta, categoriile pe
+trei niveluri, baza de date legata, adaugarea/modificarea/stergerea hainelor cu poze
+direct de pe site, fara pret pe categorii, evidenta pe fiecare admin.
+
+**Magazinul e inchis** (mentenanta pornita) si gol — asa trebuie sa ramana pana e marfa
+in el. Verificat: vizitatorii primesc „Pregatim magazinul", Google primeste noindex.
+
+**Ce urmeaza, in ordinea importantei:**
+1. **Comenzile se pierd.** Clientul apasa „comanda" si nu ajunge nicaieri. Asta e
+   urmatorul lucru mare — degeaba se vad hainele daca nu poti primi comanda.
+2. Subcategoriile pentru Articole ocazie si Articole barbati (asteptate de la proprietar).
+3. Paginile obligatorii prin lege: termeni, retur, date firma, ANPC.
+4. Datele reale: logo, adresa, telefon.
+5. Deschiderea magazinului: `MENTENANTA` din 1 in 0, pe Vercel. Doar cand e marfa.
+
+**Doua cozi mici:** de sters contul gresit `gabipopecu76@gmail.com` din Supabase; si
+prescurtarile din lista de categorii, ghicite de mine, de confirmat („Pant.tr." =
+Pantaloni trening, „Pant.vant." = Pantaloni vant, „Pant fas" = Pantaloni fas).
