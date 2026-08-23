@@ -514,3 +514,17 @@ n-am drepturi de administrator in Supabase, si asa e bine.
 Ce ramane: subcategoriile pentru Ocazie si Barbati; comenzile sa ajunga undeva (acum se
 pierd); paginile obligatorii prin lege; datele firmei; si deschiderea magazinului, cand
 e marfa in el.
+
+---
+
+## 22 august 2026 — fara pret pe categorii
+
+Observatia proprietarului, corecta: la second hand fiecare bucata e alta, deci un
+„de la X lei" scris pe categorie induce in eroare. A fost scos de pe cartonasele
+categoriilor; a ramas doar cate haine sunt inauntru. Pretul se vede la fiecare haina.
+Functia `pretMinimCategorie` a fost stearsa, nu mai avea cine s-o foloseasca.
+
+Contul `gabipopescu76.gp@gmail.com` a fost creat si verificat: intra. Ramane de sters
+cel gresit, `gabipopecu76@gmail.com`.
+
+**Stare: PUBLICAT**, commit `6145e78`. `git revert 6145e78`.
