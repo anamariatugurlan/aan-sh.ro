@@ -576,3 +576,39 @@ in el. Verificat: vizitatorii primesc „Pregatim magazinul", Google primeste no
 **Doua cozi mici:** de sters contul gresit `gabipopecu76@gmail.com` din Supabase; si
 prescurtarile din lista de categorii, ghicite de mine, de confirmat („Pant.tr." =
 Pantaloni trening, „Pant.vant." = Pantaloni vant, „Pant fas" = Pantaloni fas).
+
+---
+
+## 25 august 2026 — categoriile pentru barbati si ocazie, de la clienta
+
+Clienta a trimis listele care lipseau. Au fost adaugate exact in ordinea din mesajul
+ei, in `lib/shop.ts`:
+
+**Articole barbati** (13 categorii): Maieuri, Tricouri, Bluze maneca lunga, Hanorace,
+Bluze / pantaloni trening, Camasi, Sacouri / pantaloni, Pulovere, Paltoane, Veste,
+Geci (cu subcategoriile Fas, Blugi, Piele ecologica, Termo, Ski), Pantaloni (cu
+subcategoriile Scurti, Fas, Termo, Ski) si Blugi.
+
+**Articole ocazie** (5 categorii, fara subcategorii): Rochii, Fuste, Bluze, Sacouri,
+Pantaloni.
+
+**Nu s-a sters nimic din ce exista**: categoriile de dama si accesoriile au ramas
+neatinse, iar in baza de date nu era nicio haina (verificat inainte). Au fost inlocuite
+doar cele doua randuri provizorii goale care tineau locul listelor — exact ce a trimis
+clienta acum le umple. Adaugarea hainelor din administrare cuprinde singura noile
+categorii, nu trebuie umblat la ea.
+
+**De confirmat cu clienta**, fiindca in mesaj erau scrise cu bara: „Bluze
+trening/pantaloni trening" si „Sacouri/pantaloni" au fost puse fiecare ca o singura
+categorie, cu numele pastrat. Daca le vrea despartite in doua, se face usor.
+
+Verificari trecute: `npx tsc --noEmit`, `npx eslint .`, `npm run build`.
+Verificat local pe `http://localhost:3100`: paginile /grup/barbati si /grup/ocazie
+arata toate categoriile, cu subcategoriile sub Geci si Pantaloni.
+
+Proprietarul a confirmat structura (Geci si Pantaloni cu subcategorii, restul simple,
+toate sub grupul Barbati; Ocazie cu categorii normale) si a dat comanda de publicare.
+
+**Stare: PUBLICAT** pe 25 august 2026, commit `3943e65`. `git revert 3943e65`.
+Site-ul ramane in mentenanta — vizitatorii nu vad nimic; categoriile noi se vad
+cu cheia de acces sau din contul de admin.
