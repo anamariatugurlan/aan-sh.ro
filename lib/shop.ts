@@ -104,9 +104,40 @@ export const categorii: Categorie[] = [
   { slug: "sepci", nume: "Șepci", descriere: "", grup: "accesorii" },
   { slug: "sosete", nume: "Șosete", descriere: "", grup: "accesorii" },
 
-  // ===== Ocazie și bărbați: subcategoriile urmează, când le trimite proprietarul =====
-  { slug: "articole-ocazie", nume: "Articole ocazie", descriere: "", grup: "ocazie" },
-  { slug: "articole-barbati", nume: "Articole bărbați", descriere: "", grup: "barbati" },
+  // ================= Articole ocazie =================
+  { slug: "ocazie-rochii", nume: "Rochii", descriere: "", grup: "ocazie" },
+  { slug: "ocazie-fuste", nume: "Fuste", descriere: "", grup: "ocazie" },
+  { slug: "ocazie-bluze", nume: "Bluze", descriere: "", grup: "ocazie" },
+  { slug: "ocazie-sacouri", nume: "Sacouri", descriere: "", grup: "ocazie" },
+  { slug: "ocazie-pantaloni", nume: "Pantaloni", descriere: "", grup: "ocazie" },
+
+  // ================= Articole bărbați =================
+  // in ordinea trimisa de clienta (2026-08-25)
+  { slug: "barbati-maieuri", nume: "Maieuri", descriere: "", grup: "barbati" },
+  { slug: "barbati-tricouri", nume: "Tricouri", descriere: "", grup: "barbati" },
+  { slug: "barbati-bluze-maneca-lunga", nume: "Bluze mânecă lungă", descriere: "", grup: "barbati" },
+  { slug: "barbati-hanorace", nume: "Hanorace", descriere: "", grup: "barbati" },
+  { slug: "barbati-trening", nume: "Bluze / pantaloni trening", descriere: "", grup: "barbati" },
+  { slug: "barbati-camasi", nume: "Cămăși", descriere: "", grup: "barbati" },
+  { slug: "barbati-sacouri-pantaloni", nume: "Sacouri / pantaloni", descriere: "", grup: "barbati" },
+  { slug: "barbati-pulovere", nume: "Pulovere", descriere: "", grup: "barbati" },
+  { slug: "barbati-paltoane", nume: "Paltoane", descriere: "", grup: "barbati" },
+  { slug: "barbati-veste", nume: "Veste", descriere: "", grup: "barbati" },
+
+  { slug: "barbati-geci", nume: "Geci", descriere: "", grup: "barbati" },
+  { slug: "barbati-geci-fas", nume: "Geci fâș", descriere: "", grup: "barbati", parinte: "barbati-geci" },
+  { slug: "barbati-geci-blugi", nume: "Geci blugi", descriere: "", grup: "barbati", parinte: "barbati-geci" },
+  { slug: "barbati-geci-piele-ecologica", nume: "Geci piele ecologică", descriere: "", grup: "barbati", parinte: "barbati-geci" },
+  { slug: "barbati-geci-termo", nume: "Geci termo", descriere: "", grup: "barbati", parinte: "barbati-geci" },
+  { slug: "barbati-geci-ski", nume: "Geci ski", descriere: "", grup: "barbati", parinte: "barbati-geci" },
+
+  { slug: "barbati-pantaloni", nume: "Pantaloni", descriere: "", grup: "barbati" },
+  { slug: "barbati-pantaloni-scurti", nume: "Pantaloni scurți", descriere: "", grup: "barbati", parinte: "barbati-pantaloni" },
+  { slug: "barbati-pantaloni-fas", nume: "Pantaloni fâș", descriere: "", grup: "barbati", parinte: "barbati-pantaloni" },
+  { slug: "barbati-pantaloni-termo", nume: "Pantaloni termo", descriere: "", grup: "barbati", parinte: "barbati-pantaloni" },
+  { slug: "barbati-pantaloni-ski", nume: "Pantaloni ski", descriere: "", grup: "barbati", parinte: "barbati-pantaloni" },
+
+  { slug: "barbati-blugi", nume: "Blugi", descriere: "", grup: "barbati" },
 ];
 
 export function getCategorie(slug: string) {
