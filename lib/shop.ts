@@ -37,11 +37,15 @@ export type Produs = {
   descriere?: string | null;
 };
 
+// Ordinea de aici e ordinea din meniu si de pe prima pagina (ceruta de proprietar, 2026-08-27).
 export const grupuri: Grup[] = [
   { slug: "dama", nume: "Articole damă", descriere: "Haine de damă, alese bucată cu bucată." },
   { slug: "barbati", nume: "Articole bărbați", descriere: "Haine de bărbați." },
-  { slug: "accesorii", nume: "Accesorii", descriere: "Căciuli, eșarfe, mănuși și restul." },
+  { slug: "posete-genti", nume: "Poșete / genți", descriere: "Poșete, genți și genți sport." },
+  { slug: "incaltaminte", nume: "Încălțăminte", descriere: "Încălțăminte de damă și de bărbați." },
   { slug: "ocazie", nume: "Articole ocazie", descriere: "Ținute pentru evenimente." },
+  { slug: "accesorii", nume: "Accesorii", descriere: "Căciuli, eșarfe, mănuși și restul." },
+  { slug: "copii", nume: "Articole copii", descriere: "Haine pentru copii." },
 ];
 
 export const categorii: Categorie[] = [
@@ -92,8 +96,15 @@ export const categorii: Categorie[] = [
   { slug: "maieuri", nume: "Maieuri", descriere: "", grup: "dama" },
   { slug: "paltoane", nume: "Paltoane", descriere: "", grup: "dama" },
   { slug: "haine-munca", nume: "Haine muncă", descriere: "", grup: "dama" },
-  { slug: "posete", nume: "Poșete", descriere: "", grup: "dama" },
-  { slug: "genti-sport", nume: "Genți sport", descriere: "", grup: "dama" },
+
+  // ================= Poșete / genți =================
+  // mutate din grupul de damă in grupul lor (2026-08-27); adresele au ramas aceleasi
+  { slug: "posete", nume: "Poșete", descriere: "", grup: "posete-genti" },
+  { slug: "genti-sport", nume: "Genți sport", descriere: "", grup: "posete-genti" },
+
+  // ================= Încălțăminte =================
+  { slug: "incaltaminte-dama", nume: "Încălțăminte damă", descriere: "", grup: "incaltaminte" },
+  { slug: "incaltaminte-barbati", nume: "Încălțăminte bărbați", descriere: "", grup: "incaltaminte" },
 
   // ================= Accesorii =================
   { slug: "caciuli", nume: "Căciuli", descriere: "", grup: "accesorii" },
