@@ -612,3 +612,34 @@ toate sub grupul Barbati; Ocazie cu categorii normale) si a dat comanda de publi
 **Stare: PUBLICAT** pe 25 august 2026, commit `3943e65`. `git revert 3943e65`.
 Site-ul ramane in mentenanta — vizitatorii nu vad nimic; categoriile noi se vad
 cu cheia de acces sau din contul de admin.
+
+---
+
+## 27 august 2026 — pozele adevarate se vad in magazin; barbatii langa dama
+
+**De ce nu se vedea poza.** Clienta a pus prima haina adevarata („Rochie de vara",
+30 lei) cu poza, dar pe site aparea tot dreptunghiul colorat cu initiale. Verificat
+in baza de date: poza era salvata perfect si fisierul se deschidea — problema era in
+site, nu la clienta. Vitrina magazinului (cardul de pe prima pagina, pagina hainei,
+cosul) ramasese pe „poza de asezare" din vremea hainelor de proba; doar administrarea
+fusese invatata sa lucreze cu poze cand s-a legat baza de date.
+
+**Reparat:** cele trei locuri arata acum prima poza a hainei. Pe pagina hainei, daca
+are mai multe poze, apar si celelalte, mai mici, sub cea mare. Dreptunghiul colorat
+a ramas doar pentru hainele fara nicio poza. A trebuit si o setare noua in
+`next.config.ts`, care ii da voie site-ului sa afiseze poze de la Supabase — fara
+ea, Next refuza orice poza din alta parte.
+
+**Si o cerinta noua a proprietarului:** „Articole barbati" a fost mutat langa
+„Articole dama" — ordinea in meniu si pe prima pagina e acum: dama, barbati,
+accesorii, ocazie. S-a schimbat intr-un singur loc (`lib/shop.ts`), iar meniul,
+prima pagina si administrarea o preiau toate de acolo.
+
+Verificari trecute: `npx tsc --noEmit`, `npx eslint .`, `npm run build`. Verificat
+local pe `http://localhost:3100`: cardul si pagina rochiei arata poza adevarata
+(livrata corect de server, raspuns 200), meniul are ordinea noua. Captura de ecran
+n-a putut fi facuta (panoul de browser era inchis pe ecran), dar continutul paginilor
+a fost verificat bucata cu bucata.
+
+**Stare: PUBLICAT** pe 27 august 2026, commit `587c2e3`. `git revert 587c2e3`.
+Site-ul ramane in mentenanta; poza se vede cu cheia de acces sau din contul de admin.
