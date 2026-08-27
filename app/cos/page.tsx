@@ -90,7 +90,7 @@ export default function Page() {
           {produseInCos.map((p) => (
             <div key={p.slug} className="flex gap-4 rounded-xl border border-linie bg-suprafata p-3">
               <Link href={`/produs/${p.slug}`} className="shrink-0">
-                <Poza slug={p.slug} nume={p.nume} clasa="h-24 w-20 rounded-lg" />
+                <Poza slug={p.slug} nume={p.nume} poze={p.poze} clasa="h-24 w-20 rounded-lg" />
               </Link>
 
               <div className="flex flex-1 flex-col">

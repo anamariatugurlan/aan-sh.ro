@@ -39,9 +39,9 @@ export type Produs = {
 
 export const grupuri: Grup[] = [
   { slug: "dama", nume: "Articole damă", descriere: "Haine de damă, alese bucată cu bucată." },
+  { slug: "barbati", nume: "Articole bărbați", descriere: "Haine de bărbați." },
   { slug: "accesorii", nume: "Accesorii", descriere: "Căciuli, eșarfe, mănuși și restul." },
   { slug: "ocazie", nume: "Articole ocazie", descriere: "Ținute pentru evenimente." },
-  { slug: "barbati", nume: "Articole bărbați", descriere: "Haine de bărbați." },
 ];
 
 export const categorii: Categorie[] = [

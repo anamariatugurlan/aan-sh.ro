@@ -7,7 +7,7 @@ export function CardProdus({ p }: { p: Produs }) {
   return (
     <div className="group flex flex-col overflow-hidden rounded-xl border border-linie bg-suprafata transition hover:border-linie hover:shadow-sm">
       <Link href={`/produs/${p.slug}`} className="block">
-        <Poza slug={p.slug} nume={p.nume} clasa="aspect-[4/5] w-full" />
+        <Poza slug={p.slug} nume={p.nume} poze={p.poze} clasa="aspect-[4/5] w-full" />
       </Link>
 
       <div className="flex flex-1 flex-col gap-2 p-3">

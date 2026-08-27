@@ -1,5 +1,8 @@
-// Poza de asezare, pana primim pozele reale ale hainelor.
-// Culoarea iese din numele produsului, ca fiecare haina sa arate diferit si constant.
+// Poza unei haine: prima poza urcata de admin, daca exista.
+// Daca haina n-are nicio poza, ramane dreptunghiul colorat de asezare —
+// culoarea iese din numele produsului, ca fiecare haina sa arate diferit si constant.
+
+import Image from "next/image";
 
 function hash(s: string): number {
   let h = 0;
@@ -7,7 +10,33 @@ function hash(s: string): number {
   return Math.abs(h);
 }
 
-export function Poza({ slug, nume, clasa = "" }: { slug: string; nume: string; clasa?: string }) {
+export function Poza({
+  slug,
+  nume,
+  poze,
+  clasa = "",
+}: {
+  slug: string;
+  nume: string;
+  poze?: string[] | null;
+  clasa?: string;
+}) {
+  const poza = poze?.[0];
+
+  if (poza) {
+    return (
+      <div className={`relative overflow-hidden ${clasa}`}>
+        <Image
+          src={poza}
+          alt={nume}
+          fill
+          sizes="(max-width: 768px) 50vw, 25vw"
+          className="object-cover"
+        />
+      </div>
+    );
+  }
+
   const h = hash(slug);
   const ton = h % 360;
   const initiale = nume

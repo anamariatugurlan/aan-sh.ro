@@ -39,7 +39,22 @@ export default async function Page(props: PageProps<"/produs/[slug]">) {
       </nav>
 
       <div className="mt-6 grid gap-8 md:grid-cols-2">
-        <Poza slug={p.slug} nume={p.nume} clasa="aspect-[4/5] w-full rounded-2xl" />
+        <div>
+          <Poza slug={p.slug} nume={p.nume} poze={p.poze} clasa="aspect-[4/5] w-full rounded-2xl" />
+          {(p.poze?.length ?? 0) > 1 && (
+            <div className="mt-3 grid grid-cols-4 gap-3">
+              {p.poze!.slice(1).map((adresa, i) => (
+                <Poza
+                  key={adresa}
+                  slug={p.slug}
+                  nume={`${p.nume} — poza ${i + 2}`}
+                  poze={[adresa]}
+                  clasa="aspect-square w-full rounded-lg"
+                />
+              ))}
+            </div>
+          )}
+        </div>
 
         <div className="flex flex-col">
           <h1 className="text-3xl font-bold tracking-tight text-principal">{p.nume}</h1>
