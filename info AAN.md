@@ -643,3 +643,38 @@ a fost verificat bucata cu bucata.
 
 **Stare: PUBLICAT** pe 27 august 2026, commit `587c2e3`. `git revert 587c2e3`.
 Site-ul ramane in mentenanta; poza se vede cu cheia de acces sau din contul de admin.
+
+---
+
+## 27 august 2026 — meniul rearanjat, trei grupuri noi
+
+Proprietarul a cerut ordinea si componenta noua a meniului. Acum e asa:
+
+    1. Articole dama
+    2. Articole barbati
+    3. Posete / genti      <- grup NOU; Posete si Genti sport au fost mutate aici
+                              din grupul de dama (adresele lor au ramas aceleasi)
+    4. Incaltaminte        <- grup NOU, cu doua categorii: Incaltaminte dama
+                              si Incaltaminte barbati
+    5. Articole ocazie
+    6. Accesorii
+    7. Articole copii      <- grup NOU, deocamdata gol; pe pagina lui scrie
+                              „Categoriile pentru grupul asta urmeaza"
+
+Totul s-a schimbat intr-un singur loc (`lib/shop.ts`); meniul, prima pagina si
+alegerea categoriei din administrare preiau ordinea de acolo singure.
+
+**De lamurit cu proprietarul:** categoriile pentru Articole copii; si daca la
+Incaltaminte vrea o singura categorie „dama/barbat" in loc de doua separate —
+a zis „publica momentan asa", deci varianta cu doua ramane pana zice altfel.
+
+**Si o semnalare a proprietarului, retrasa:** „nu merg toate butoanele, de ex
+schimba la anunt nu face nimic" — a revenit imediat cu „rezolvat". Daca reapare,
+de cerut exact butonul si pagina.
+
+Verificari trecute: `npx tsc --noEmit`, `npx eslint .`, `npm run build`. Verificat
+local pe 3100: ordinea corecta in meniu si pe prima pagina, pe telefon randul de
+categorii se deruleaza lateral, pagina nu da pe dinafara.
+
+**Stare: PUBLICAT** pe 27 august 2026, commit `60ab1ce`. `git revert 60ab1ce`.
+Site-ul ramane in mentenanta.
